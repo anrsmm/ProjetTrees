@@ -9,7 +9,7 @@
 Grille*creer_grille(int Hauteur, int Largeur){
 	Grille *g;
 
-	if (Hauteur <= 0 & Largeur <=0) {
+	if (Hauteur <= 0 || Largeur <=0) {
 		return NULL;
 	}
 
