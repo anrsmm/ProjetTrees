@@ -100,18 +100,49 @@ Grille *creer_grille(int Hauteur, int Largeur) {
 
 
 // destruction grille
-void free_grille(Grille*g){
+//libération de ce qui a été alloué dans ordre invers
+void free_grille(Grille *g) {
+	int i;
 
+	if (g == NULL) {
+        	return;
+    	}
+
+   	if (g->est_tree != NULL) {
+        	for (i = 0; i < g->Hauteur; i++) {
+            		free(g->est_tree[i]);
+        	}
+        free(g->est_tree);
+    	}
+
+    	free(g->ligne_nbr);
+    	free(g->col_nbr);
+    	free(g->trees);
+    	free(g->empty_cases);
+
+
+	free(g);
 }
 
-// position dans la grille?
+// position dans la grille?retourn 0 si non et 1 si oui
 int pos_valide(Grille *g, int ligne, int col){
-
+	if (g == NULL){
+		return 0;
+	}
+	if (ligne >=0 && ligne < g->Hauteur && col >=0 && col < g->Largeur){
+		printf("Position valide");
+		return 1;
+	} else {
+		printf("Position non valide");
+		return 0;
+	}
 }
 
-//type de case 
+//type de case
 //case contient un arbre?retourne 1 si arbre, 0 sinon
 int case_est_tree(Grille *g, Position p);
+
+
 
 //case est vide?retourne 1 si vide 
 int case_est_vide(Grille *g, Position p);
