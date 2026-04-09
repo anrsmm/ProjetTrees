@@ -162,5 +162,5 @@ int case_est_vide(Grille *g, Position p){
 	if (!pos_valide(g, p.ligne, p.colonne)){
 		return 0;
 	}
-	return (!case_est_tree(g,p);
+	return (!case_est_tree(g,p));
 }
