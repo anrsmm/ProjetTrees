@@ -127,6 +127,7 @@ void free_grille(Grille *g) {
 // position dans la grille?retourn 0 si non et 1 si oui
 int pos_valide(Grille *g, int ligne, int col){
 	if (g == NULL){
+//		printf("Grille vide");
 		return 0;
 	}
 	if (ligne >=0 && ligne < g->Hauteur && col >=0 && col < g->Largeur){
@@ -139,10 +140,27 @@ int pos_valide(Grille *g, int ligne, int col){
 }
 
 //type de case
-//case contient un arbre?retourne 1 si arbre, 0 sinon
-int case_est_tree(Grille *g, Position p);
+//case contient un arbre?retourne 0 si non et valeur stocké si oui
+int case_est_tree(Grille *g, Position p){
+	if (g == NULL) {
+//		printf("Grille vide");
+		return 0; //sans grille pas de case valide
+	}
+	if (!pos_valide(g, p.ligne, p.colonne)){
+		return 0;//or grille on ne fait pas g->... car erreur mémoire
+	}
+	return (g->est_tree[p.ligne][p.colonne]);//on renvoie la valeur stockée
+}
 
 
-
-//case est vide?retourne 1 si vide 
-int case_est_vide(Grille *g, Position p);
+//case est vide?retourne 1 si vide
+int case_est_vide(Grille *g, Position p){
+	if (g == NULL) {
+//		printf("Grille vide");
+		return 0;// si la grille n'existe pas la case n'est pas vide
+	}
+	if (!pos_valide(g, p.ligne, p.colonne)){
+		return 0;
+	}
+	return (!case_est_tree(g,p);
+}
