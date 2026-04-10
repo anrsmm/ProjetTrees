@@ -1,16 +1,22 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -g
+CFLAGS = -g -Wall -Wextra -Werror -gdwarf-4
 
-all: test_grille
+all: test_grille1 test_grille2
 
-test_grille: test_grille.o grille.o
-	$(CC) $(CFLAGS) -o test_grille test_grille.o grille.o
+test_grille1: test_grille1.o grille.o
+	$(CC) $(CFLAGS) -o $@ $^
 
-test_grille.o: test_grille.c grille.h
-	$(CC) $(CFLAGS) -c test_grille.c
+test_grille2: test_grille2.o grille.o
+	$(CC) $(CFLAGS) -o $@ $^
 
-grille.o: grille.c grille.h
-	$(CC) $(CFLAGS) -c grille.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
+
+grille.o: grille.h
+test_grille1.o: grille.h
+test_grille2.o: grille.h
 
 clean:
-	rm -f *.o test_grille
+	rm -f *.o test_grille1 test_grille2
+
+.PHONY: all clean

@@ -5,6 +5,91 @@
 #include "grille.h"
 
 
+//lecture fichier .txt
+Grille *lire_grille_fichier(const char *nom_fichier) {
+    FILE *f;
+    Grille *g;
+    int Hauteur, Largeur;
+    char *ligne;
+
+    f = fopen(nom_fichier, "r");
+    if (f == NULL) {
+        return NULL;
+    }
+
+    if (fscanf(f, "%d %d", &Hauteur, &Largeur) != 2) {
+        fclose(f);
+        return NULL;
+    }
+
+    g = creer_grille(Hauteur, Largeur);
+    if (g == NULL) {
+        fclose(f);
+        return NULL;
+    }
+
+    for (int i = 0; i < Hauteur; i++) {
+        if (fscanf(f, "%d", &g->ligne_nbr[i]) != 1) {
+            fclose(f);
+            free_grille(g);
+            return NULL;
+        }
+    }
+
+    for (int j = 0; j < Largeur; j++) {
+        if (fscanf(f, "%d", &g->col_nbr[j]) != 1) {
+            fclose(f);
+            free_grille(g);
+            return NULL;
+        }
+    }
+
+    ligne = malloc((Largeur + 1) * sizeof(char));
+    if (ligne == NULL) {
+        fclose(f);
+        free_grille(g);
+        return NULL;
+    }
+
+    for (int i = 0; i < Hauteur; i++) {
+        if (fscanf(f, "%s", ligne) != 1) {
+            free(ligne);
+            fclose(f);
+            free_grille(g);
+            return NULL;
+        }
+
+        for (int j = 0; j < Largeur; j++) {
+            Position p;
+            p.ligne = i;
+            p.colonne = j;
+
+            if (ligne[j] == 'T') {
+                g->est_tree[i][j] = 1;
+                g->trees[g->tree_nbr] = p;
+                g->tree_nbr++;
+            }
+            else if (ligne[j] == '.') {
+                g->est_tree[i][j] = 0;
+                g->empty_cases[g->empty_nbr] = p;
+                g->empty_nbr++;
+            }
+            else {
+                free(ligne);
+                fclose(f);
+                free_grille(g);
+                return NULL;
+            }
+        }
+    }
+
+    free(ligne);
+    fclose(f);
+    return g;
+}
+
+
+
 // création grille
 Grille *creer_grille(int Hauteur, int Largeur) {
     Grille *g;

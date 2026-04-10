@@ -24,7 +24,7 @@ int main(void) {
 
     p2.ligne = 0;
     p2.colonne = 0;   // vide
-
+//
     p3.ligne = 10;
     p3.colonne = 10;  // hors grille
 

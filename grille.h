@@ -23,6 +23,8 @@ typedef struct {
 } Grille;
 
 
+//lecture de la grille rpésente dans le fichier .txt
+Grille *lire_grille_fichier(const char *nom_fichier); 
 // création/destruction
 Grille*creer_grille(int Hauteur, int Largeur);
 void free_grille(Grille*g);
