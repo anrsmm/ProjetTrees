@@ -5,6 +5,32 @@
 #include "grille.h"
 
 
+
+void afficher_grille(Grille *g) {
+    int i, j;
+
+    if (g == NULL) {
+        printf("Grille NULL\n");
+        return;
+    }
+
+    printf("\nGrille (%d x %d):\n", g->Hauteur, g->Largeur);
+
+    for (i = 0; i < g->Hauteur; i++) {
+        for (j = 0; j < g->Largeur; j++) {
+            if (g->est_tree[i][j]) {
+                printf("T");
+            } else {
+                printf(".");
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+
+
 //lecture fichier .txt
 Grille *lire_grille_fichier(const char *nom_fichier) {
     FILE *f;
@@ -216,10 +242,10 @@ int pos_valide(Grille *g, int ligne, int col){
 		return 0;
 	}
 	if (ligne >=0 && ligne < g->Hauteur && col >=0 && col < g->Largeur){
-		printf("Position valide");
+//		printf("Position valide");
 		return 1;
 	} else {
-		printf("Position non valide");
+//		printf("Position non valide");
 		return 0;
 	}
 }

@@ -1,6 +1,8 @@
 #ifndef VOISINAGE_H
 #define VOISINAGE_H
 
+#include "grille.h"
+
 //renvoie les voisins orthogonaux valides
 int n4_voisins(Grille *g, Position p, Position voisins[4]);
 
