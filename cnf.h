@@ -3,6 +3,7 @@
 
 #include "grille.h"
 #include "voisinage.h"
+#include "cnf.h"
 
 typedef struct {
     int *litt;
@@ -23,5 +24,7 @@ void free_clause(Clause *clause);
 
 //fonctions pour manipuler les CNF
 CNFformule creer_cnfFormule();
-void ajout_clauseFormule(CNFformule *formule, CLause clause);
+void ajout_clauseFormule(CNFformule *formule, Clause clause);
 void free_cnfFormule(CNFformule *formule);
+
+#endif
