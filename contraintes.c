@@ -2,6 +2,7 @@
 
 
 #include "contraintes.h"
+#include "contraintesCard.h"
 #include "sat.h"
 #include "grille.h"
 #include "cnf.h"
@@ -245,4 +246,25 @@ void contrainte7(Grille *g, CNFformule *f){
 	}
 
 
+}
+
+//////////////////////////////////////////////////////////
+/*
+FONCTION CONSTRUCTION CNF 
+*/
+void construire_cnf_complete(Grille *g, SATmap *m, CNFformule *f) {
+    if (g == NULL || m == NULL || f == NULL) {
+        return;
+    }
+
+    contrainte1(g, f);
+    contrainte2(g, m, f);
+    contrainte3(g, m, f);
+    contrainte4(g, m, f);
+    contrainte5(g, m, f);
+    contrainte6(g, m, f);
+    contrainte7(g, f);
+
+    contraintes_lignes(g, f);
+    contraintes_colonnes(g, f);
 }

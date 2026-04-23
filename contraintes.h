@@ -51,5 +51,11 @@ CONTRAINTE 7 : "LES TENTES NE PEUVENT PAS SE TOUCHEES
 ------------------------------------------------------*/
 void contrainte7(Grille *g, CNFformule *f);
 
+////////////////////////////////////////////////////////
+/*------------------------------------------------------
+CONSTRUCTION DE LA FORMULE COMPLETE
+------------------------------------------------------*/
+void construire_cnf_complete(Grille *g, SATmap *m, CNFformule *f);
+
 
 #endif
