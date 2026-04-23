@@ -4,6 +4,8 @@
 ![Build](https://img.shields.io/badge/build-Makefile-success)
 ![Plateforme](https://img.shields.io/badge/plateforme-linux-lightgrey)
 ![Statut](https://img.shields.io/badge/statut-actif-brightgreen)
+![INF402](https://moodle.caseine.org/course/view.php?id=1271)
+
 
 Ce projet transforme le puzzle **Tents and Trees** en probleme **SAT**:
 - lecture d'une grille au format texte
