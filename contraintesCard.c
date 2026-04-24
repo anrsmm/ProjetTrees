@@ -8,10 +8,22 @@
 
 
 /*
-profondeur : combien d'indices on a déjà choisis
-depart : a partir de quel indice on a le droit de continuer a choisir : ca evite les doublons et garantit un ordre croissant
-cas terminal : if (profondeur == taille_groupe) ca veut dire : on a choisi assez d'éléments, on peut créer une clause
+Encodage cardinalité "AU PLUS k" (at-most-k)
+------------------------------------------------
+But : sur un ensemble de variables booléennes vars[0..n-1], imposer qu'au plus k
+variables soient vraies.
 
+Idée SAT classique utilisée ici :
+- Si on veut "au plus k", alors toute combinaison de (k+1) variables
+  ne peut pas être simultanément vraie.
+- Pour chaque sous-ensemble S de taille (k+1), on ajoute :
+    OR_{x in S} (¬x)
+  Ce qui interdit "toutes vraies en même temps" pour ce sous-ensemble.
+
+Rôle des paramètres récursifs :
+- profondeur : combien d'indices sont déjà choisis dans 'choix'
+- depart     : prochain indice minimal autorisé (évite les doublons de combinaisons)
+- taille_groupe = k+1
 */
 
 static void gen_au_plus_k(CNFformule *f, int vars[], int n, int taille_groupe, int choix[], int profondeur, int depart) {
@@ -19,6 +31,12 @@ static void gen_au_plus_k(CNFformule *f, int vars[], int n, int taille_groupe, i
     Clause clause;
 
     if (profondeur == taille_groupe) {
+        /*
+        Cas terminal :
+        On a construit un sous-ensemble S de taille (k+1) via choix[].
+        On crée la clause :
+            (¬vars[choix[0]] v ¬vars[choix[1]] v ... )
+        */
         clause = creer_clause();
         if (clause.litt == NULL) {
             return;
@@ -33,7 +51,9 @@ static void gen_au_plus_k(CNFformule *f, int vars[], int n, int taille_groupe, i
     }
 
     for (i = depart; i < n; i++) {
+        // On fixe le prochain élément de la combinaison.
         choix[profondeur] = i;
+        // Appel récursif avec i+1 : garantit des combinaisons strictement croissantes.
         gen_au_plus_k(f, vars, n, taille_groupe, choix, profondeur + 1, i + 1);
     }
 }
@@ -48,10 +68,12 @@ void ajout_au_plus_k(CNFformule *f, int vars[], int n, int k) {
     }
 
     if (k < 0) {
+        // Cas incohérent : "au plus -1" est impossible.
         return;
     }
 
     if (k >= n) {
+        // Toujours vrai : on ne peut jamais avoir plus de n vraies sur n variables.
         return;
     }
 
@@ -69,7 +91,20 @@ void ajout_au_plus_k(CNFformule *f, int vars[], int n, int k) {
 
 
 /*
-AU MOINS K
+Encodage cardinalité "AU MOINS k" (at-least-k)
+------------------------------------------------
+But : imposer qu'au moins k variables soient vraies.
+
+Transformation utilisée ici :
+"Au moins k vraies" équivaut à dire :
+- pour tout sous-ensemble T de taille (n-k+1), au moins une variable de T est vraie.
+
+Donc pour chaque sous-ensemble T de taille (n-k+1), on ajoute la clause :
+    OR_{x in T} x
+
+Intuition :
+si on avait moins de k vraies, alors il y aurait au moins (n-k+1) variables fausses ;
+en prenant exactement ces variables, on violerait une clause de ce type.
 */
 static void gen_au_moins_k(CNFformule *f, int vars[], int n,
                            int taille_groupe, int choix[],
@@ -78,6 +113,8 @@ static void gen_au_moins_k(CNFformule *f, int vars[], int n,
     Clause clause;
 
     if (profondeur == taille_groupe) {
+        // Cas terminal : on a un sous-ensemble T complet.
+        // On ajoute la clause positive (x1 v x2 v ...).
         clause = creer_clause();
         if (clause.litt == NULL) {
             return;
@@ -92,6 +129,7 @@ static void gen_au_moins_k(CNFformule *f, int vars[], int n,
     }
 
     for (i = depart; i < n; i++) {
+        // Construction combinatoire identique à "au plus k".
         choix[profondeur] = i;
         gen_au_moins_k(f, vars, n, taille_groupe, choix, profondeur + 1, i + 1);
     }
@@ -106,10 +144,16 @@ void ajout_au_moins_k(CNFformule *f, int vars[], int n, int k) {
     }
 
     if (k <= 0) {
+        // Toujours vrai : "au moins 0" ne contraint rien.
         return;
     }
 
     if (k > n) {
+        /*
+        Impossible d'avoir au moins k vraies si k > n.
+        On encode l'insatisfiabilité avec une clause vide.
+        En CNF, une clause vide est toujours fausse => formule UNSAT.
+        */
         Clause clause = creer_clause();
         if (clause.litt == NULL) {
             return;
@@ -118,6 +162,7 @@ void ajout_au_moins_k(CNFformule *f, int vars[], int n, int k) {
         return;
     }
 
+    // Taille des sous-ensembles T à générer pour l'encodage au-moins-k.
     taille_groupe = n - k + 1;
 
     choix = malloc(taille_groupe * sizeof(int));
@@ -131,7 +176,10 @@ void ajout_au_moins_k(CNFformule *f, int vars[], int n, int k) {
 }
 
 /*
-EXACTEMENT k
+Encodage "EXACTEMENT k"
+-----------------------
+exactement_k  <=>  (au_moins_k) ET (au_plus_k)
+On combine donc simplement les deux encodages précédents.
 */
 void ajout_exactement_k(CNFformule *f, int vars[], int n, int k) {
     if (f == NULL || vars == NULL) {
@@ -142,7 +190,8 @@ void ajout_exactement_k(CNFformule *f, int vars[], int n, int k) {
     ajout_au_plus_k(f, vars, n, k);
 }
 
-// RECUPERATION DES VARIABLES DE LA LIGNE
+// Récupère les identifiants DIMACS T_(ligne,j) pour toutes les colonnes j.
+// vars[j] devient la variable "tente sur la case (ligne,j)".
 void variables_ligne(Grille *g, int ligne, int vars[]) {
     int j;
     Position p;
@@ -162,7 +211,9 @@ void variables_ligne(Grille *g, int ligne, int vars[]) {
     }
 }
 
-//FONCTION POUR CHAQUE LIGNE
+// Contrainte d'une ligne :
+// le nombre de tentes de la ligne doit être exactement g->ligne_nbr[ligne].
+// On applique donc "exactement_k" sur les variables de la ligne.
 void contrainte_ligne(Grille *g, CNFformule *f, int ligne) {
     int *vars;
     int k;
@@ -183,12 +234,13 @@ void contrainte_ligne(Grille *g, CNFformule *f, int ligne) {
     variables_ligne(g, ligne, vars);
     k = g->ligne_nbr[ligne];
 
+    // Formule logique : somme_j T_(ligne,j) = k
     ajout_exactement_k(f, vars, g->Largeur, k);
 
     free(vars);
 }
 
-//appliquer contrainte a toutes les lignes
+// Applique la contrainte de comptage à chaque ligne de la grille.
 void contraintes_lignes(Grille *g, CNFformule *f) {
     int i;
 
@@ -205,6 +257,7 @@ void contraintes_lignes(Grille *g, CNFformule *f) {
                CONTRAINTES SUR LES COLONNES
 */////////////////////////////////////////////////////////
 
+// Récupère les identifiants DIMACS T_(i,colonne) pour toutes les lignes i.
 void variables_colonne(Grille *g, int colonne, int vars[]) {
     int i;
     Position p;
@@ -246,6 +299,7 @@ void contrainte_colonne(Grille *g, CNFformule *f, int colonne) {
     variables_colonne(g, colonne, vars);
     k = g->col_nbr[colonne];
 
+    // Formule logique : somme_i T_(i,colonne) = k
     ajout_exactement_k(f, vars, g->Hauteur, k);
 
     free(vars);
@@ -258,6 +312,7 @@ void contraintes_colonnes(Grille *g, CNFformule *f) {
         return;
     }
 
+    // Applique la contrainte de comptage à chaque colonne.
     for (j = 0; j < g->Largeur; j++) {
         contrainte_colonne(g, f, j);
     }

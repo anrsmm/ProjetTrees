@@ -1,0 +1,13 @@
+.git
+.gitignore
+*.o
+__pycache__/
+*.pyc
+temp.cnf
+temp.out
+donnees_grilles.js
+cnf-3sat
+grille-cnf
+minisat-grille
+resolutionTents
+test_*

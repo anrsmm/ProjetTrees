@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -Wextra -Werror -gdwarf-4
 
-all: test_grille1 test_grille2 test_voisin4 test_voisin8 test_sat test_cnf test_contrainte1 test_contrainte2 test_contrainte3 test_contrainte4 test_contrainte5 test_contrainte6 test_contrainte7 test_card1 test_card2 test_card3 test_ligne1 test_lignes test_colonnes test_contraintesCOMPLET test_dimacs test_solution
+all: test_grille1 test_grille2 test_voisin4 test_voisin8 test_sat test_cnf test_contrainte1 test_contrainte2 test_contrainte3 test_contrainte4 test_contrainte5 test_contrainte6 test_contrainte7 test_card1 test_card2 test_card3 test_ligne1 test_lignes test_colonnes test_contraintesCOMPLET test_dimacs test_solution test_lireDimacs test_3sat grille-cnf minisat-grille resolutionTents cnf-3sat
 
 test_grille1: test_grille1.o grille.o
 	$(CC) $(CFLAGS) -o $@ $^
@@ -49,6 +49,15 @@ test_dimacs: test_dimacs.o grille.o cnf.o sat.o contraintes.o voisinage.o contra
 
 test_solution: test_solution.o grille.o cnf.o sat.o contraintes.o voisinage.o contraintesCard.o dimacs.o
 
+test_lireDimacs: test_lireDimacs.o cnf.o 3sat.o
+test_3sat: test_3sat.o cnf.o 3sat.o
+
+grille-cnf: grille-cnf.o grille.o sat.o cnf.o contraintes.o contraintesCard.o voisinage.o dimacs.o
+minisat-grille: minisat-grille.o grille.o sat.o voisinage.o dimacs.o
+resolutionTents: resolutionTents.o grille.o sat.o cnf.o contraintes.o contraintesCard.o voisinage.o dimacs.o
+cnf-3sat: cnf-3sat.o cnf.o 3sat.o
+
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
@@ -88,8 +97,17 @@ dimacs.o: dimacs.h cnf.h sat.h
 test_dimacs.o: grille.h cnf.h sat.h contraintes.h voisinage.h contraintesCard.h dimacs.h
 test_solution.o: grille.h cnf.h sat.h contraintes.h voisinage.h contraintesCard.h dimacs.h
 
+3sat.o: 3sat.h cnf.h
+test_lireDimacs.o:cnf.h 3sat.h
+test_3sat.o: cnf.h 3sat.h
+
+grille-cnf.o: grille.h sat.h cnf.h contraintes.h dimacs.h
+minisat-grille.o: grille.h sat.h dimacs.h
+resolutionTents.o: grille.h sat.h cnf.h contraintes.h dimacs.h
+cnf-3sat.o: cnf.h 3sat.h
+
 clean:
-	rm -f *.o test_grille1 test_grille2 test_voisin4 test_voisin8 test_sat test_cnf test_contrainte1 test_contrainte2 test_contrainte3 test_contrainte4 test_contrainte5 test_contrainte6 test_contrainte7 test_card1 test_card2 test_card3 test_ligne1 test_lignes test_colonnes test_contraintesCOMPLET test_dimacs test_solution
+	rm -f *.o test_grille1 test_grille2 test_voisin4 test_voisin8 test_sat test_cnf test_contrainte1 test_contrainte2 test_contrainte3 test_contrainte4 test_contrainte5 test_contrainte6 test_contrainte7 test_card1 test_card2 test_card3 test_ligne1 test_lignes test_colonnes test_contraintesCOMPLET test_dimacs test_solution test_lireDimacs test_3sat grille-cnf minisat-grille resolutionTents cnf-3sat 
 
 
 .PHONY: all clean

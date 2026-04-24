@@ -2,6 +2,8 @@
 
 #include "cnf.h"
 
+// Crée une clause vide avec une capacité initiale.
+// La capacité grandira dynamiquement si besoin.
 Clause creer_clause(){
 	Clause c;
 
@@ -23,12 +25,13 @@ void free_clause(Clause *clause) {
     }
 
     free(clause->litt);
-	//eviter erreur on remet a zero tout
+	// Bonne pratique : remettre les champs à zéro après free
+	// pour éviter les doubles usages accidentels.
     clause->litt = NULL;
     clause->taille = 0;
     clause->max = 0;
 }
-//ajout a la fin
+// Ajoute un littéral en fin de clause (tableau dynamique).
 void ajout_LittClause(Clause *clause, int litt){
 	if (clause ==NULL){
 		return;
@@ -38,6 +41,7 @@ void ajout_LittClause(Clause *clause, int litt){
 	}
 	int *temp;
 	if (clause->taille >= clause->max) {
+		// Stratégie classique : doubler la capacité pour amortir le coût.
 		temp =realloc(clause->litt, 2 * clause->max * sizeof(int));
 		if (temp ==NULL) {
 			return;
@@ -50,6 +54,7 @@ void ajout_LittClause(Clause *clause, int litt){
 }
 
 
+// Crée une formule CNF vide (liste dynamique de clauses).
 CNFformule creer_cnfFormule() {
     CNFformule f;
 
@@ -79,6 +84,7 @@ void ajout_clauseFormule(CNFformule *formule, Clause clause){
     }
 
     if (formule->num >= formule->max) {
+        // Même stratégie d'agrandissement que pour les littéraux.
         temp = realloc(formule->clauses, 2 * formule->max * sizeof(Clause));
         if (temp == NULL) {
             return;
@@ -100,6 +106,7 @@ void free_cnfFormule(CNFformule *formule) {
     }
 
     if (formule->clauses != NULL) {
+        // Libération profonde : chaque clause puis le tableau de clauses.
         for (i = 0; i < formule->num; i++) {
             free_clause(&formule->clauses[i]);
         }

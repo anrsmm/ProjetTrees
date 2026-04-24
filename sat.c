@@ -5,6 +5,9 @@
 #include "sat.h"
 #include "voisinage.h"
 
+// Variable "tente" principale :
+// on réserve les ids 1..(H*L) pour les variables T_(i,j).
+// Mapping choisi : id = i*Largeur + j + 1 (DIMACS commence à 1).
 int tente_var(Grille *g, Position p){
 	if (g == NULL) {
 	//	printf("Erreur : grille NULL\n");
@@ -20,7 +23,8 @@ int tente_var(Grille *g, Position p){
 	return idT;
 }
 
-//
+// Compte combien de variables d'association A_(arbre,case) seront nécessaires.
+// Chaque association correspond à un couple (arbre, case_vide_voisine_4).
 int compter_varsAssoc(Grille *g){
     if (g == NULL) {
         return 0;
@@ -53,6 +57,7 @@ SATmap *creer_mapSAT(Grille *g){
 
 	m->assoc_var_num = compter_varsAssoc(g);
 	m->total_var_num = g->Hauteur * g->Largeur + m->assoc_var_num;
+	// total_var_num = variables tente + variables association.
 
 
 	m->assoc_vars = malloc( m->assoc_var_num * sizeof(AssociationVar));
@@ -62,8 +67,10 @@ SATmap *creer_mapSAT(Grille *g){
 
 	}
 	id_courant = g->Hauteur * g->Largeur +1;
+	// Les ids d'association commencent juste après les ids des tentes.
 
-	//remplissage du tableau
+	// Remplissage séquentiel de la table d'association :
+	// assoc_vars[index] = (arbre, case, id_dimacs)
 
 	int nb_voisinsVides;
 	int index = 0;
@@ -85,7 +92,7 @@ SATmap *creer_mapSAT(Grille *g){
 	return m;
 }
 
-//liberation 
+// Libération complète de la structure SATmap.
 void free_mapSAT(SATmap *m){
 	if (m==NULL){
 		return;
@@ -100,6 +107,8 @@ int assoc_var(SATmap *m, Position tree, Position case_vide){
 	}
 
 	for (int i=0;i < m->assoc_var_num; i++) {
+		// Recherche linéaire : suffisante ici car on reste sur des tailles de grille
+		// raisonnables pour un projet pédagogique.
 		if (m->assoc_vars[i].tree.ligne == tree.ligne && 
 			m->assoc_vars[i].tree.colonne == tree.colonne && 
 			m->assoc_vars[i].case_vide.ligne == case_vide.ligne &&

@@ -1,0 +1,62 @@
+CAS LIMITES - Jeu d'instances supplementaires
+==============================================
+
+Ce fichier documente les nouvelles grilles "petites / limites" ajoutees
+pour tester le comportement du modele SAT.
+
+1) Grille26_66.txt
+   - Type: SAT (satisfiable)
+   - Idee: grille vide (aucun arbre, aucun quota de tente).
+   - But: verifier le cas trivial "tout a 0".
+
+2) Grille27_66.txt
+   - Type: UNSAT (insatisfiable)
+   - Idee: aucun arbre mais quota de tentes non nul.
+   - But: verifier que le modele refuse des tentes sans arbre associe.
+
+3) Grille28_11.txt
+   - Type: SAT
+   - Idee: plus petite grille possible, case vide, quotas a 0.
+   - But: verifier le cas minimal valide.
+
+4) Grille29_11.txt
+   - Type: UNSAT
+   - Idee: plus petite grille possible, case arbre unique.
+   - But: un arbre doit avoir une tente voisine, impossible en 1x1.
+
+5) Grille30_22.txt
+   - Type: SAT
+   - Idee: petite grille 2x2 avec un arbre et quotas contraints.
+   - But: verifier que les contraintes ligne/colonne + association fonctionnent
+     sur une petite instance non triviale.
+
+6) Grille31_05.txt
+   - Type: ENTREE INVALIDE (hauteur = 0)
+   - Idee: grille avec une dimension nulle (0x5).
+   - But: verifier le rejet d'une grille non valide.
+
+7) Grille32_50.txt
+   - Type: ENTREE INVALIDE (largeur = 0)
+   - Idee: grille avec une dimension nulle (5x0).
+   - But: verifier le rejet d'une grille non valide.
+
+8) Grille33_malformee_caractere.txt
+   - Type: ENTREE INVALIDE (caractere inconnu)
+   - Idee: presence de 'X' dans la grille (seuls 'T' et '.' sont acceptes).
+   - But: verifier la robustesse du parseur sur caracteres interdits.
+
+9) Grille34_malformee_ligne_courte.txt
+   - Type: ENTREE INVALIDE (ligne trop courte)
+   - Idee: largeur attendue = 6, mais une ligne ne contient que 5 caracteres.
+   - But: verifier le comportement en cas de ligne mal formee.
+
+10) Grille35_malformee_indices.txt
+    - Type: ENTREE INVALIDE (indices colonnes incomplets)
+    - Idee: seulement 5 indices colonnes fournis pour une largeur 6.
+    - But: verifier le rejet quand l'entete/indices est incomplet.
+
+11) Grille36_66.txt
+    - Type: UNSAT
+    - Idee: quotas lignes/colonnes tous a 0 mais presence d'un arbre.
+    - But: verifier la contradiction "aucune tente autorisee" vs
+      "chaque arbre doit avoir une tente voisine".

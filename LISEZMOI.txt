@@ -1,0 +1,149 @@
+LISEZMOI - Mode d'emploi du projet
+==================================
+
+Ce fichier est centre sur l'utilisation du programme (scenarios d'usage),
+avec des exemples concrets.
+
+Pour l'installation, les pre-requis et les ressources externes (URL),
+voir le fichier INSTALL.txt.
+
+------------------------------------------------------------------
+1) Objectif du programme
+------------------------------------------------------------------
+
+Le projet resout des grilles Tents and Trees via SAT :
+- lecture d'une grille texte,
+- construction de la formule CNF,
+- resolution SAT,
+- affichage de la solution.
+
+------------------------------------------------------------------
+2) Mode d'emploi rapide (commande principale)
+------------------------------------------------------------------
+
+Commande recommande :
+
+    ./resolutionTents <fichier_grille.txt>
+
+Exemple :
+
+    ./resolutionTents Tests/Grille1_66.txt
+
+Ce que tu obtiens :
+- affichage de la solution dans le terminal,
+- fichiers temp.cnf et temp.out,
+- fichier donnees_grilles.js pour l'affichage graphique.
+
+------------------------------------------------------------------
+3) Utilisation en 3 etapes (si on veut voir le detail)
+------------------------------------------------------------------
+
+Etape A - Generer la CNF DIMACS :
+
+    ./grille-cnf Tests/Grille1_66.txt temp.cnf
+
+Etape B - Lancer le solveur SAT :
+
+    minisat temp.cnf temp.out
+
+Etape C - Afficher la solution sur la grille :
+
+    ./minisat-grille Tests/Grille1_66.txt temp.out
+
+------------------------------------------------------------------
+4) Affichage graphique final (Python)
+------------------------------------------------------------------
+
+Apres avoir lance resolutionTents :
+
+    python3 affichage_grilles_tk.py
+
+Le script lit donnees_grilles.js et affiche :
+- grille initiale
+- grille solution
+
+Images utilisees :
+- arbre.png
+- tente.png
+
+------------------------------------------------------------------
+5) Programmes principaux a demontrer
+------------------------------------------------------------------
+
+1) grille-cnf
+   Conversion grille -> CNF DIMACS
+
+2) minisat-grille
+   Lecture de temp.out et affichage de la solution
+
+3) resolutionTents
+   Chaine complete automatique
+
+4) cnf-3sat
+   Conversion CNF -> 3-SAT equivalent
+
+Exemple :
+
+    ./cnf-3sat temp.cnf temp_3sat.cnf
+
+------------------------------------------------------------------
+6) Exemples d'instances
+------------------------------------------------------------------
+
+Petites :
+- Tests/Grille1_66.txt
+- Tests/Grille2_66.txt
+- Tests/Grille6_88.txt
+
+Moyennes :
+- Tests/Grille11_1010.txt
+- Tests/Grille15_1010.txt
+- Tests/Grille18_1515.txt
+
+Grandes :
+- Tests/Grille23_2020.txt
+- Tests/Grille24_2525.txt
+- Tests/Grille25_3030.txt
+
+Cas limites (ajoutes pour tests fonctionnels) :
+- Tests/Grille26_66.txt   (SAT, grille vide)
+- Tests/Grille27_66.txt   (UNSAT, quotas non nuls sans arbres)
+- Tests/Grille28_11.txt   (SAT, plus petite grille valide)
+- Tests/Grille29_11.txt   (UNSAT, arbre isole en 1x1)
+- Tests/Grille30_22.txt   (SAT, petit cas non trivial)
+- Tests/Grille31_05.txt   (ENTREE INVALIDE, hauteur = 0)
+- Tests/Grille32_50.txt   (ENTREE INVALIDE, largeur = 0)
+- Tests/Grille33_malformee_caractere.txt
+- Tests/Grille34_malformee_ligne_courte.txt
+- Tests/Grille35_malformee_indices.txt
+- Tests/Grille36_66.txt   (UNSAT, quotas 0 avec presence d'arbre)
+
+Details des attentes :
+- voir Tests/CAS_LIMITES.txt
+
+------------------------------------------------------------------
+7) Exemple de demonstration complete
+------------------------------------------------------------------
+
+    ./grille-cnf Tests/Grille6_88.txt temp.cnf
+    minisat temp.cnf temp.out
+    ./minisat-grille Tests/Grille6_88.txt temp.out
+    ./cnf-3sat temp.cnf temp_3sat.cnf
+    ./resolutionTents Tests/Grille6_88.txt
+
+Puis (affichage graphique) :
+
+    python3 affichage_grilles_tk.py
+
+------------------------------------------------------------------
+8) Option Docker (usage rapide)
+------------------------------------------------------------------
+
+Si Docker est installe, tu peux lancer sans installer localement minisat :
+
+    docker build -t tents-sat .
+    docker run --rm tents-sat ./resolutionTents Tests/Grille1_66.txt
+
+Ou via compose :
+
+    docker compose up --build solver

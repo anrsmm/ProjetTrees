@@ -6,6 +6,8 @@
 
 
 
+// Affichage simple de la grille d'entrée :
+// T = arbre, . = case vide (pas la solution SAT).
 void afficher_grille(Grille *g) {
     int i, j;
 
@@ -31,7 +33,12 @@ void afficher_grille(Grille *g) {
 
 
 
-//lecture fichier .txt
+// Lecture d'une instance depuis fichier texte.
+// Format attendu :
+// 1) Hauteur Largeur
+// 2) Hauteur entiers (indices de lignes)
+// 3) Largeur entiers (indices de colonnes)
+// 4) Hauteur lignes de caracteres : 'T' (arbre) ou '.' (vide)
 Grille *lire_grille_fichier(const char *nom_fichier) {
     FILE *f;
     Grille *g;
@@ -91,11 +98,14 @@ Grille *lire_grille_fichier(const char *nom_fichier) {
             p.colonne = j;
 
             if (ligne[j] == 'T') {
+                // On enregistre l'arbre dans la matrice + dans la liste trees[]
+                // (utile pour itérer plus vite ensuite).
                 g->est_tree[i][j] = 1;
                 g->trees[g->tree_nbr] = p;
                 g->tree_nbr++;
             }
             else if (ligne[j] == '.') {
+                // Idem pour les cases vides : matrice + liste empty_cases[].
                 g->est_tree[i][j] = 0;
                 g->empty_cases[g->empty_nbr] = p;
                 g->empty_nbr++;
@@ -116,7 +126,10 @@ Grille *lire_grille_fichier(const char *nom_fichier) {
 
 
 
-// création grille
+// Alloue et initialise toutes les structures de la grille.
+// On maintient en parallèle :
+// - une matrice est_tree pour les tests rapides
+// - des listes trees / empty_cases pour les parcours ciblés.
 Grille *creer_grille(int Hauteur, int Largeur) {
     Grille *g;
     int i, j;
@@ -210,8 +223,8 @@ Grille *creer_grille(int Hauteur, int Largeur) {
 
 
 
-// destruction grille
-//libération de ce qui a été alloué dans ordre invers
+// Libère proprement la grille.
+// Important : libération inverse des allocations.
 void free_grille(Grille *g) {
 	int i;
 
@@ -235,7 +248,7 @@ void free_grille(Grille *g) {
 	free(g);
 }
 
-// position dans la grille?retourn 0 si non et 1 si oui
+// Vérifie qu'une position (ligne,colonne) est dans les bornes de la grille.
 int pos_valide(Grille *g, int ligne, int col){
 	if (g == NULL){
 //		printf("Grille vide");
@@ -250,8 +263,8 @@ int pos_valide(Grille *g, int ligne, int col){
 	}
 }
 
-//type de case
-//case contient un arbre?retourne 0 si non et valeur stocké si oui
+// Renvoie 1 si la case contient un arbre, 0 sinon.
+// Fonction "safe" : protège contre grille NULL et positions invalides.
 int case_est_tree(Grille *g, Position p){
 	if (g == NULL) {
 //		printf("Grille vide");
@@ -264,7 +277,8 @@ int case_est_tree(Grille *g, Position p){
 }
 
 
-//case est vide?retourne 1 si vide
+// Renvoie 1 si la case est vide.
+// Ici "vide" est défini comme l'opposé de case_est_tree.
 int case_est_vide(Grille *g, Position p){
 	if (g == NULL) {
 //		printf("Grille vide");
