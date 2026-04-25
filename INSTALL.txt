@@ -76,25 +76,12 @@ Affichage Python (optionnel) :
 6) Execution avec Docker (optionnel)
 ------------------------------------------------------------------
 
-Construire l'image :
+Cette version du depot ne contient pas de configuration Docker
+(`Dockerfile` / `docker-compose.yml` absents).
 
-    docker build -t tents-sat .
-
-Lancer la commande par defaut (resolutionTents sur Grille1_66) :
-
-    docker run --rm tents-sat
-
-Lancer une commande specifique :
-
-    docker run --rm tents-sat ./resolutionTents Tests/Grille6_88.txt
-
-Ou avec docker compose :
-
-    docker compose up --build solver
-
-Shell interactif dans le conteneur :
-
-    docker compose run --rm shell
+Conclusion :
+- l'execution Docker n'est pas disponible dans cette version ;
+- utiliser la compilation et l'execution locales (sections 4 et 5).
 INSTALL - Projet INF402 (Tents and Trees SAT)
 ==============================================
 

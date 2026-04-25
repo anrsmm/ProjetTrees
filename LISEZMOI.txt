@@ -184,16 +184,4 @@ Details des attentes :
 Puis (affichage graphique) :
 
     python3 affichage_grilles_tk.py
-
-------------------------------------------------------------------
-8) Option Docker (usage rapide)
-------------------------------------------------------------------
-
-Si Docker est installe, tu peux lancer sans installer localement minisat :
-
-    docker build -t tents-sat .
-    docker run --rm tents-sat ./resolutionTents Tests/Grille1_66.txt
-
-Ou via compose :
-
-    docker compose up --build solver
+    
