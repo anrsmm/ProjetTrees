@@ -11,6 +11,6 @@ void afficher_solution(Grille *g, int *val);
 
 
 // AFFICHAGE FINAL
-int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val);
+int ecrire_donnees_grilles_json(const char *nom_fichier, Grille *g, int *val);
 
 #endif

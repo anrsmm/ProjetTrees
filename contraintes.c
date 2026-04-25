@@ -58,6 +58,8 @@ void contrainte2(Grille *g, SATmap *m, CNFformule *f){
 	Position c;
 	Clause clause;
 	for (int i=0; i<m->assoc_var_num; i++){
+		// idA = variable d'association A_{arbre,case}
+		// idT = variable "la case contient une tente"
 		idA= m->assoc_vars[i].dimacs_id;
 		c =m->assoc_vars[i].case_vide;
 		idT= tente_var(g,c);

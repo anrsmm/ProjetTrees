@@ -152,7 +152,7 @@ Lancer la resolution complete (grille -> CNF -> minisat -> solution):
 Ce programme produit aussi:
 - temp.cnf
 - temp.out
-- donnees_grilles.js
+- donnees_grilles.json
 
 ------------------------------------------------------------------
 5) Execution en etapes (alternative)
@@ -179,7 +179,7 @@ D) Transformer CNF -> 3-SAT (optionnel):
 ------------------------------------------------------------------
 
 Pre-requis supplementaires:
-- fichier donnees_grilles.js (genere par resolutionTents)
+- fichier donnees_grilles.json (genere par resolutionTents)
 - images arbre.png et tente.png a la racine du projet
 
 Lancer l'interface:

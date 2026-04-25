@@ -99,12 +99,12 @@ void afficher_solution(Grille *g, int *val) {
 
 
 
-// Exporte les données en JS pour l'affichage graphique.
+// Exporte les donnees en JSON pour l'affichage graphique Python.
 // On sérialise :
 // - indices de lignes / colonnes
 // - grille initiale (arbres)
 // - grille solution (arbres + tentes trouvées)
-int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
+int ecrire_donnees_grilles_json(const char *nom_fichier, Grille *g, int *val) {
     FILE *out;
     int i, j;
 
@@ -117,9 +117,9 @@ int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
         return 0;
     }
 
-    fprintf(out, "window.donneesGrilles = {\n");
+    fprintf(out, "{\n");
 
-    fprintf(out, "  indicesLignes: [");
+    fprintf(out, "  \"indicesLignes\": [");
     for (i = 0; i < g->Hauteur; i++) {
         fprintf(out, "%d", g->ligne_nbr[i]);
         if (i < g->Hauteur - 1) {
@@ -128,7 +128,7 @@ int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
     }
     fprintf(out, "],\n");
 
-    fprintf(out, "  indicesColonnes: [");
+    fprintf(out, "  \"indicesColonnes\": [");
     for (j = 0; j < g->Largeur; j++) {
         fprintf(out, "%d", g->col_nbr[j]);
         if (j < g->Largeur - 1) {
@@ -137,7 +137,7 @@ int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
     }
     fprintf(out, "],\n");
 
-    fprintf(out, "  grilleInitiale: [\n");
+    fprintf(out, "  \"grilleInitiale\": [\n");
     for (i = 0; i < g->Hauteur; i++) {
         fprintf(out, "    [");
         for (j = 0; j < g->Largeur; j++) {
@@ -159,7 +159,7 @@ int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
     }
     fprintf(out, "  ],\n");
 
-    fprintf(out, "  grilleSolution: [\n");
+    fprintf(out, "  \"grilleSolution\": [\n");
     for (i = 0; i < g->Hauteur; i++) {
         fprintf(out, "    [");
         for (j = 0; j < g->Largeur; j++) {
@@ -183,7 +183,7 @@ int ecrire_donnees_grilles_js(const char *nom_fichier, Grille *g, int *val) {
     }
     fprintf(out, "  ]\n");
 
-    fprintf(out, "};\n");
+    fprintf(out, "}\n");
     fclose(out);
     return 1;
 }

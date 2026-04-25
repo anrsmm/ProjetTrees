@@ -32,7 +32,7 @@ Exemple :
 Ce que tu obtiens :
 - affichage de la solution dans le terminal,
 - fichiers temp.cnf et temp.out,
-- fichier donnees_grilles.js pour l'affichage graphique.
+- fichier donnees_grilles.json pour l'affichage graphique.
 
 ------------------------------------------------------------------
 3) Utilisation en 3 etapes (si on veut voir le detail)
@@ -58,7 +58,7 @@ Apres avoir lance resolutionTents :
 
     python3 affichage_grilles_tk.py
 
-Le script lit donnees_grilles.js et affiche :
+Le script lit donnees_grilles.json et affiche :
 - grille initiale
 - grille solution
 

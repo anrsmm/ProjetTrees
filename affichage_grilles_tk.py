@@ -1,12 +1,11 @@
 import json
 import math
-import re
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox
 
 
-FICHIER_DONNEES = "donnees_grilles.js"
+FICHIER_DONNEES = "donnees_grilles.json"
 FICHIER_IMAGE_ARBRE = "arbre.png"
 FICHIER_IMAGE_TENTE = "tente.png"
 MARGE_BORD = 36
@@ -24,20 +23,10 @@ def charger_donnees(nom_fichier):
             "Lance d'abord: ./resolutionTents Tests/Grille1_66.txt"
         )
 
-    texte = chemin.read_text(encoding="utf-8")
-
-    debut = texte.find("{")
-    fin = texte.rfind("}")
-    if debut == -1 or fin == -1 or fin <= debut:
-        raise ValueError("Format invalide dans donnees_grilles.js")
-
-    contenu_objet = texte[debut : fin + 1]
-
-    # Le fichier est en syntaxe JS (cles sans guillemets).
-    # On ajoute des guillemets pour le parser en JSON.
-    contenu_json = re.sub(r"(\b[a-zA-Z_]\w*)\s*:", r'"\1":', contenu_objet)
-
-    return json.loads(contenu_json)
+    try:
+        return json.loads(chemin.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as erreur:
+        raise ValueError("Format invalide dans donnees_grilles.json") from erreur
 
 
 def charger_images_cases(root):

@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) {
     printf("Solution :\n");
     afficher_solution(g, val);
 
-    if (ecrire_donnees_grilles_js("donnees_grilles.js", g, val)) {
-        printf("\nFichier cree : donnees_grilles.js\n");
+    if (ecrire_donnees_grilles_json("donnees_grilles.json", g, val)) {
+        printf("\nFichier cree : donnees_grilles.json\n");
     } else {
-        printf("\nErreur : impossible de creer donnees_grilles.js\n");
+        printf("\nErreur : impossible de creer donnees_grilles.json\n");
     }
 
     free(val);
