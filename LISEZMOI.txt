@@ -35,6 +35,56 @@ Ce que tu obtiens :
 - fichier donnees_grilles.json pour l'affichage graphique.
 
 ------------------------------------------------------------------
+2bis) Tests unitaires/fonctionnels (dossier fcts_tests)
+------------------------------------------------------------------
+
+Pre-requis necessaires pour tous les tests :
+- gcc
+- make
+- etre place a la racine du projet
+
+Compiler tous les tests :
+
+    make
+
+Les executables de test sont generes dans :
+
+    fcts_tests/
+
+Important :
+- certains tests n'ont pas d'argument (ex: test_card1, test_cnf),
+- d'autres exigent des arguments (fichier grille/CNF, ligne, colonne, etc.).
+
+Commande complete pour executer tous les tests avec des arguments valides :
+
+    ./grille-cnf Tests/Grille1_66.txt temp.cnf
+    minisat temp.cnf temp.out
+    ./fcts_tests/test_grille1
+    ./fcts_tests/test_grille2 Tests/Grille1_66.txt
+    ./fcts_tests/test_voisin4 Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_voisin8 Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_sat Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_cnf
+    ./fcts_tests/test_contrainte1 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte2 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte3 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte4 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte5 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte6 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte7 Tests/Grille1_66.txt
+    ./fcts_tests/test_card1
+    ./fcts_tests/test_card2
+    ./fcts_tests/test_card3
+    ./fcts_tests/test_ligne1 Tests/Grille1_66.txt 0
+    ./fcts_tests/test_lignes Tests/Grille1_66.txt
+    ./fcts_tests/test_colonnes Tests/Grille1_66.txt
+    ./fcts_tests/test_contraintesCOMPLET Tests/Grille1_66.txt
+    ./fcts_tests/test_dimacs Tests/Grille1_66.txt temp_test_dimacs.cnf
+    ./fcts_tests/test_solution Tests/Grille1_66.txt temp.out
+    ./fcts_tests/test_lireDimacs temp.cnf
+    ./fcts_tests/test_3sat temp.cnf temp_3sat.cnf
+
+------------------------------------------------------------------
 3) Utilisation en 3 etapes (si on veut voir le detail)
 ------------------------------------------------------------------
 
@@ -63,8 +113,8 @@ Le script lit donnees_grilles.json et affiche :
 - grille solution
 
 Images utilisees :
-- arbre.png
-- tente.png
+- Images/arbre.png
+- Images/tente.png
 
 ------------------------------------------------------------------
 5) Programmes principaux a demontrer

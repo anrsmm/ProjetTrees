@@ -6,8 +6,8 @@ from tkinter import messagebox
 
 
 FICHIER_DONNEES = "donnees_grilles.json"
-FICHIER_IMAGE_ARBRE = "arbre.png"
-FICHIER_IMAGE_TENTE = "tente.png"
+FICHIER_IMAGE_ARBRE = "Images/arbre.png"
+FICHIER_IMAGE_TENTE = "Images/tente.png"
 MARGE_BORD = 36
 FACTEUR_REDUCTION = 0.96
 LARGEUR_MIN_FENETRE = 1300

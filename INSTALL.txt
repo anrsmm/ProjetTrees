@@ -180,7 +180,7 @@ D) Transformer CNF -> 3-SAT (optionnel):
 
 Pre-requis supplementaires:
 - fichier donnees_grilles.json (genere par resolutionTents)
-- images arbre.png et tente.png a la racine du projet
+- images Images/arbre.png et Images/tente.png
 
 Lancer l'interface:
 
