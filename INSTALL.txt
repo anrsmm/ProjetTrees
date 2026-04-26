@@ -30,16 +30,28 @@ Outils optionnels (affichage graphique uniquement) :
 3) Compilation depuis le code source
 ------------------------------------------------------------------
 
-Depuis la racine du projet :  make
+Depuis la racine du projet (methode classique) :
+    make
+
+Depuis la racine du projet (methode IA pour grandes grilles) :
+    make ia
+
+Remarque :
+- Le projet utilise maintenant un seul Makefile.
+- Le fichier Makefile(1) n'est plus necessaire.
 
 Nettoyage :   make clean
 
 ------------------------------------------------------------------
 4) Execution du programme principal
 ------------------------------------------------------------------
-Commande recommandée (execution complete) :
+Commande recommandee (methode classique, execution complete) :
 
   ./resolutionTents <Grille>
+
+Commande recommandee (methode IA, execution complete) :
+
+  ./resolutionTentsIA <Grille>
 
 Sorties attendues :
 - affichage de la solution dans le terminal ;
@@ -50,7 +62,7 @@ Sorties attendues :
 ------------------------------------------------------------------
 5) Execution manuelle etape par etape 
 ------------------------------------------------------------------
-Avec le fichier Grille1_66 : 
+Avec le fichier Grille1_66 (methode classique) : 
 
 A) Générer le CNF DIMACS :
         ./grille-cnf Tests/Grille1_66.txt temp.cnf
@@ -63,6 +75,14 @@ C) Afficher la solution :
 
 D) Conversion de CNF en 3-SAT :
         ./cnf-3sat temp.cnf temp_3sat.cnf
+
+Version IA (grandes grilles) :
+A) Generer le CNF DIMACS :
+        ./grille-cnfIA Tests/Grille25_3030.txt temp.cnf
+B) Lancer MiniSat :
+        minisat temp.cnf temp.out
+C) Afficher la solution :
+        ./minisat-grille Tests/Grille25_3030.txt temp.out
 
 ------------------------------------------------------------------
 6) Affichage graphique (optionnel)

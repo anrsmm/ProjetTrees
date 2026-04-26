@@ -3,6 +3,9 @@ CFLAGS = -g -Wall -Wextra -Werror -gdwarf-4
 
 all: fcts_tests/test_grille1 fcts_tests/test_grille2 fcts_tests/test_voisin4 fcts_tests/test_voisin8 fcts_tests/test_sat fcts_tests/test_cnf fcts_tests/test_contrainte1 fcts_tests/test_contrainte2 fcts_tests/test_contrainte3 fcts_tests/test_contrainte4 fcts_tests/test_contrainte5 fcts_tests/test_contrainte6 fcts_tests/test_contrainte7 fcts_tests/test_card1 fcts_tests/test_card2 fcts_tests/test_card3 fcts_tests/test_ligne1 fcts_tests/test_lignes fcts_tests/test_colonnes fcts_tests/test_contraintesCOMPLET fcts_tests/test_dimacs fcts_tests/test_solution fcts_tests/test_lireDimacs fcts_tests/test_3sat grille-cnf minisat-grille resolutionTents cnf-3sat
 
+# Cibles methode IA (cardinalite avec variables auxiliaires)
+ia: resolutionTentsIA grille-cnfIA
+
 fcts_tests/test_grille1: fcts_tests/test_grille1.o grille.o
 	$(CC) $(CFLAGS) -o $@ $^
 
@@ -57,6 +60,12 @@ minisat-grille: minisat-grille.o grille.o sat.o voisinage.o dimacs.o
 resolutionTents: resolutionTents.o grille.o sat.o cnf.o contraintes.o contraintesCard.o voisinage.o dimacs.o
 cnf-3sat: cnf-3sat.o cnf.o 3sat.o
 
+resolutionTentsIA: resolutionTents_IA.o grille.o sat.o cnf.o contraintes.o contraintesCard_IA.o voisinage.o dimacs.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+grille-cnfIA: grille-cnf.o grille.o sat.o cnf.o contraintes.o contraintesCard_IA.o voisinage.o dimacs.o
+	$(CC) $(CFLAGS) -o $@ $^
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I. -c $< -o $@
@@ -107,10 +116,12 @@ fcts_tests/test_3sat.o: cnf.h 3sat.h
 grille-cnf.o: grille.h sat.h cnf.h contraintes.h dimacs.h
 minisat-grille.o: grille.h sat.h dimacs.h
 resolutionTents.o: grille.h sat.h cnf.h contraintes.h dimacs.h
+resolutionTents_IA.o: grille.h sat.h cnf.h contraintes.h contraintesCard_IA.h dimacs.h
 cnf-3sat.o: cnf.h 3sat.h
+contraintesCard_IA.o: contraintesCard_IA.h grille.h cnf.h sat.h
 
 clean:
-	rm -f *.o fcts_tests/*.o fcts_tests/test_grille1 fcts_tests/test_grille2 fcts_tests/test_voisin4 fcts_tests/test_voisin8 fcts_tests/test_sat fcts_tests/test_cnf fcts_tests/test_contrainte1 fcts_tests/test_contrainte2 fcts_tests/test_contrainte3 fcts_tests/test_contrainte4 fcts_tests/test_contrainte5 fcts_tests/test_contrainte6 fcts_tests/test_contrainte7 fcts_tests/test_card1 fcts_tests/test_card2 fcts_tests/test_card3 fcts_tests/test_ligne1 fcts_tests/test_lignes fcts_tests/test_colonnes fcts_tests/test_contraintesCOMPLET fcts_tests/test_dimacs fcts_tests/test_solution fcts_tests/test_lireDimacs fcts_tests/test_3sat grille-cnf minisat-grille resolutionTents cnf-3sat
+	rm -f *.o fcts_tests/*.o fcts_tests/test_grille1 fcts_tests/test_grille2 fcts_tests/test_voisin4 fcts_tests/test_voisin8 fcts_tests/test_sat fcts_tests/test_cnf fcts_tests/test_contrainte1 fcts_tests/test_contrainte2 fcts_tests/test_contrainte3 fcts_tests/test_contrainte4 fcts_tests/test_contrainte5 fcts_tests/test_contrainte6 fcts_tests/test_contrainte7 fcts_tests/test_card1 fcts_tests/test_card2 fcts_tests/test_card3 fcts_tests/test_ligne1 fcts_tests/test_lignes fcts_tests/test_colonnes fcts_tests/test_contraintesCOMPLET fcts_tests/test_dimacs fcts_tests/test_solution fcts_tests/test_lireDimacs fcts_tests/test_3sat grille-cnf minisat-grille resolutionTents cnf-3sat resolutionTentsIA grille-cnfIA
 
 
-.PHONY: all clean
+.PHONY: all ia clean

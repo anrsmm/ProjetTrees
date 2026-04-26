@@ -16,7 +16,11 @@ Le projet a pour objectif de résoudre des grilles Tents en utilisant un solveur
 2) Utilisation rapide
 ------------------------------------------------------------------
 
-Commande principale : ./resolutionTents <fichier_grille.txt>
+Methode classique :
+    ./resolutionTents <fichier_grille.txt>
+
+Methode IA (recommandee pour grandes grilles) :
+    ./resolutionTentsIA <fichier_grille.txt>
 
 Exemple :
 
@@ -28,10 +32,19 @@ Sorties obtenues :
 - fichier temp.out ;
 - fichier donnees_grilles.json (pour l'affichage graphique).
 
+Compilation associee :
+- make      -> methode classique
+- make ia   -> methode IA
+
+Remarque :
+- un seul Makefile est utilise ;
+- Makefile(1) n'est plus necessaire.
+
 ------------------------------------------------------------------
 3) Utilisation manuelle en 3 etapes
 ------------------------------------------------------------------
 
+Methode classique
 Etape A - Generer le CNF DIMACS :
 
     ./grille-cnf Tests/Grille1_66.txt temp.cnf
@@ -47,6 +60,19 @@ Etape C - Afficher la solution sur la grille :
 Option - Conversion CNF -> 3-SAT :
 
     ./cnf-3sat temp.cnf temp_3sat.cnf
+
+Methode IA (grandes grilles)
+Etape A - Generer le CNF DIMACS :
+
+    ./grille-cnfIA Tests/Grille25_3030.txt temp.cnf
+
+Etape B - Lancer MiniSat :
+
+    minisat temp.cnf temp.out
+
+Etape C - Afficher la solution sur la grille :
+
+    ./minisat-grille Tests/Grille25_3030.txt temp.out
 
 ------------------------------------------------------------------
 4) Mode d'emploi des tests (fcts_tests + cnf-3sat)
