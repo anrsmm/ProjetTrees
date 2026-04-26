@@ -4,6 +4,7 @@
 #include "grille.h"
 #include "sat.h"
 
+//test mapping SAT (vars tente + vars assoc).
 int main(int argc, char *argv[]) {
     Grille *g;
     Position p;

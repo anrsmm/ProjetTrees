@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "grille.h"
 
+//test lecture de grille depuis fichier.
 int main(int argc, char *argv[]) {
 	if (argc != 2) {
 		printf("Usage: %s <fichier>\n", argv[0]);

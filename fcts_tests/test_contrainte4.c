@@ -6,6 +6,7 @@
 #include "sat.h"
 #include "contraintes.h"
 
+//test contrainte4 (>=1 assoc par arbre).
 int main(int argc, char *argv[]) {
     Grille *g;
     SATmap *m;

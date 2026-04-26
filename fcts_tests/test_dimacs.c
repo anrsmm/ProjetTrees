@@ -8,6 +8,7 @@
 #include "contraintesCard.h"
 #include "dimacs.h"
 
+//test export DIMACS de la formule CNF.
 int main(int argc, char *argv[]) {
     Grille *g;
     SATmap *m;

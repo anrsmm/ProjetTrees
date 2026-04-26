@@ -1,98 +1,42 @@
-LISEZMOI - Mode d'emploi du projet
+LISEZMOI - Mode d'emploi projet Tents
 ==================================
-
-Ce fichier est centre sur l'utilisation du programme (scenarios d'usage),
-avec des exemples concrets.
-
-Pour l'installation, les pre-requis et les ressources externes (URL),
-voir le fichier INSTALL.txt.
+Pour l'installation, les pre-requis et les liens externes etc cf INSTALL.txt
 
 ------------------------------------------------------------------
-1) Objectif du programme
+1) Objectif
 ------------------------------------------------------------------
 
-Le projet resout des grilles Tents and Trees via SAT :
-- lecture d'une grille texte,
-- construction de la formule CNF,
-- resolution SAT,
-- affichage de la solution.
+Le projet a pour objectif de résoudre des grilles Tents en utilisant un solveur SAT :
+- lecture d'une grille .txt,
+- génération d'une formule CNF,
+- résolution SAT avec le solveur MiniSat,
+- affichage de la solution (sur le terminal et par affichage graphique).
 
 ------------------------------------------------------------------
-2) Mode d'emploi rapide (commande principale)
+2) Utilisation rapide
 ------------------------------------------------------------------
 
-Commande recommande :
-
-    ./resolutionTents <fichier_grille.txt>
+Commande principale : ./resolutionTents <fichier_grille.txt>
 
 Exemple :
 
     ./resolutionTents Tests/Grille1_66.txt
 
-Ce que tu obtiens :
-- affichage de la solution dans le terminal,
-- fichiers temp.cnf et temp.out,
-- fichier donnees_grilles.json pour l'affichage graphique.
+Sorties obtenues :
+- affichage de la solution dans le terminal ;
+- fichier temp.cnf ;
+- fichier temp.out ;
+- fichier donnees_grilles.json (pour l'affichage graphique).
 
 ------------------------------------------------------------------
-2bis) Tests unitaires/fonctionnels (dossier fcts_tests)
+3) Utilisation manuelle en 3 etapes
 ------------------------------------------------------------------
 
-Pre-requis necessaires pour tous les tests :
-- gcc
-- make
-- etre place a la racine du projet
-
-Compiler tous les tests :
-
-    make
-
-Les executables de test sont generes dans :
-
-    fcts_tests/
-
-Important :
-- certains tests n'ont pas d'argument (ex: test_card1, test_cnf),
-- d'autres exigent des arguments (fichier grille/CNF, ligne, colonne, etc.).
-
-Commande complete pour executer tous les tests avec des arguments valides :
-
-    ./grille-cnf Tests/Grille1_66.txt temp.cnf
-    minisat temp.cnf temp.out
-    ./fcts_tests/test_grille1
-    ./fcts_tests/test_grille2 Tests/Grille1_66.txt
-    ./fcts_tests/test_voisin4 Tests/Grille1_66.txt 0 1
-    ./fcts_tests/test_voisin8 Tests/Grille1_66.txt 0 1
-    ./fcts_tests/test_sat Tests/Grille1_66.txt 0 1
-    ./fcts_tests/test_cnf
-    ./fcts_tests/test_contrainte1 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte2 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte3 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte4 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte5 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte6 Tests/Grille1_66.txt
-    ./fcts_tests/test_contrainte7 Tests/Grille1_66.txt
-    ./fcts_tests/test_card1
-    ./fcts_tests/test_card2
-    ./fcts_tests/test_card3
-    ./fcts_tests/test_ligne1 Tests/Grille1_66.txt 0
-    ./fcts_tests/test_lignes Tests/Grille1_66.txt
-    ./fcts_tests/test_colonnes Tests/Grille1_66.txt
-    ./fcts_tests/test_contraintesCOMPLET Tests/Grille1_66.txt
-    ./fcts_tests/test_dimacs Tests/Grille1_66.txt temp_test_dimacs.cnf
-    ./fcts_tests/test_solution Tests/Grille1_66.txt temp.out
-    ./fcts_tests/test_lireDimacs temp.cnf
-    ./fcts_tests/test_3sat temp.cnf temp_3sat.cnf
-
-------------------------------------------------------------------
-3) Utilisation en 3 etapes (si on veut voir le detail)
-------------------------------------------------------------------
-
-Etape A - Generer la CNF DIMACS :
+Etape A - Generer le CNF DIMACS :
 
     ./grille-cnf Tests/Grille1_66.txt temp.cnf
 
-Etape B - Lancer le solveur SAT :
+Etape B - Lancer MiniSat :
 
     minisat temp.cnf temp.out
 
@@ -100,44 +44,64 @@ Etape C - Afficher la solution sur la grille :
 
     ./minisat-grille Tests/Grille1_66.txt temp.out
 
-------------------------------------------------------------------
-4) Affichage graphique final (Python)
-------------------------------------------------------------------
-
-Apres avoir lance resolutionTents :
-
-    python3 affichage_grilles_tk.py
-
-Le script lit donnees_grilles.json et affiche :
-- grille initiale
-- grille solution
-
-Images utilisees :
-- Images/arbre.png
-- Images/tente.png
-
-------------------------------------------------------------------
-5) Programmes principaux a demontrer
-------------------------------------------------------------------
-
-1) grille-cnf
-   Conversion grille -> CNF DIMACS
-
-2) minisat-grille
-   Lecture de temp.out et affichage de la solution
-
-3) resolutionTents
-   Chaine complete automatique
-
-4) cnf-3sat
-   Conversion CNF -> 3-SAT equivalent
-
-Exemple :
+Option - Conversion CNF -> 3-SAT :
 
     ./cnf-3sat temp.cnf temp_3sat.cnf
 
 ------------------------------------------------------------------
-6) Exemples d'instances
+4) Mode d'emploi des tests (fcts_tests + cnf-3sat)
+------------------------------------------------------------------
+(au préalable il aura bien fallut compiler les executables avec make)
+avec le fichier Grille1_66 : 
+Pour générer un CNF de rzférence :
+    ./grille-cnf Tests/Grille1_66.txt temp.cnf
+    minisat temp.cnf temp.out
+
+Tests sans argument :
+    ./fcts_tests/test_grille1
+    ./fcts_tests/test_cnf
+    ./fcts_tests/test_card1
+    ./fcts_tests/test_card2
+    ./fcts_tests/test_card3
+
+Tests avec fichier grille :
+    ./fcts_tests/test_grille2 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte1 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte2 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte3 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte4 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte5 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte6 Tests/Grille1_66.txt
+    ./fcts_tests/test_contrainte7 Tests/Grille1_66.txt
+    ./fcts_tests/test_lignes Tests/Grille1_66.txt
+    ./fcts_tests/test_colonnes Tests/Grille1_66.txt
+    ./fcts_tests/test_contraintesCOMPLET Tests/Grille1_66.txt
+
+Tests en donnant des indices (lignes/colonnes) :
+    ./fcts_tests/test_voisin4 Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_voisin8 Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_sat Tests/Grille1_66.txt 0 1
+    ./fcts_tests/test_ligne1 Tests/Grille1_66.txt 0
+
+Tests DIMACS / solution / 3-SAT :
+    ./fcts_tests/test_dimacs Tests/Grille1_66.txt temp_test_dimacs.cnf
+    ./fcts_tests/test_solution Tests/Grille1_66.txt temp.out
+    ./fcts_tests/test_lireDimacs temp.cnf
+    ./fcts_tests/test_3sat temp.cnf temp_3sat_from_test.cnf
+    ./cnf-3sat temp.cnf temp_3sat.cnf
+
+------------------------------------------------------------------
+5) Affichage graphique choisi
+------------------------------------------------------------------
+Commande : python3 affichage_grilles_tk.py
+
+Prerequis :
+- donnees_grilles.json (genere par resolutionTents) ;
+- Images/arbre.png et Images/tente.png ;
+- python3 et python3-tk.
+
+------------------------------------------------------------------
+6) Exemples de grille 
 ------------------------------------------------------------------
 
 Petites :
@@ -155,33 +119,45 @@ Grandes :
 - Tests/Grille24_2525.txt
 - Tests/Grille25_3030.txt
 
-Cas limites (ajoutes pour tests fonctionnels) :
-- Tests/Grille26_66.txt   (SAT, grille vide)
-- Tests/Grille27_66.txt   (UNSAT, quotas non nuls sans arbres)
-- Tests/Grille28_11.txt   (SAT, plus petite grille valide)
-- Tests/Grille29_11.txt   (UNSAT, arbre isole en 1x1)
-- Tests/Grille30_22.txt   (SAT, petit cas non trivial)
-- Tests/Grille31_05.txt   (ENTREE INVALIDE, hauteur = 0)
-- Tests/Grille32_50.txt   (ENTREE INVALIDE, largeur = 0)
-- Tests/Grille33_malformee_caractere.txt
-- Tests/Grille34_malformee_ligne_courte.txt
-- Tests/Grille35_malformee_indices.txt
-- Tests/Grille36_66.txt   (UNSAT, quotas 0 avec presence d'arbre)
+Cas limites :
+- Tests/Grille26_66.txt (SAT)
+  Idée : grille vide
 
-Details des attentes :
-- voir Tests/CAS_LIMITES.txt
+- Tests/Grille27_66.txt (UNSAT)
+  Idée : aucun arbre mais quotas non nuls
+  But : vérifier qu'une tente sans arbre est impossible
 
-------------------------------------------------------------------
-7) Exemple de demonstration complete
-------------------------------------------------------------------
+- Tests/Grille28_11.txt (SAT)
+  Idée : plus petite grille possible est valide
 
-    ./grille-cnf Tests/Grille6_88.txt temp.cnf
-    minisat temp.cnf temp.out
-    ./minisat-grille Tests/Grille6_88.txt temp.out
-    ./cnf-3sat temp.cnf temp_3sat.cnf
-    ./resolutionTents Tests/Grille6_88.txt
+- Tests/Grille29_11.txt (UNSAT)
+  Idée : grille 1x1 avec arbre unique
+  But : vérifier l'impossibilite pour lui d'avoir une tente voisine
 
-Puis (affichage graphique) :
+- Tests/Grille30_22.txt (SAT)
+  Idée : petit cas 2x2 
+  But : vérifier association + cardinalités
 
-    python3 affichage_grilles_tk.py
-    
+- Tests/Grille31_05.txt (entrée invalide)
+  Idée : hauteur nulle (0x5).
+  But : vérifier le rejet d'une dimension invalide
+
+- Tests/Grille32_50.txt (entree invalide)
+  Idée : largeur nulle (5x0).
+  But : vérifier le rejet d'une dimension invalide
+
+- Tests/Grille33_malformee_caractere.txt (entrée invalide)
+  Idée : caractère interdit dans la grille.
+  But : vérifier la robustesse
+
+- Tests/Grille34_malformee_ligne_courte.txt (entrée invalide)
+  Idée : ligne plus courte que la largeur annoncée
+  But : vérif rejet des lignes mal formées
+
+- Tests/Grille35_malformee_indices.txt (entrée invalide)
+  Idée : indices colonnes est incomplets
+  But : vérif le rejet d'un en-tete incomplet
+
+- Tests/Grille36_66.txt (UNSAT)
+  Idée : quotas à 0 avec présence d'arbre
+  But : vérifidation de la contradiction avec la contrainte d'assoc arbre-tente

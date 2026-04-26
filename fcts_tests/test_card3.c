@@ -3,6 +3,9 @@
 #include "cnf.h"
 #include "contraintesCard.h"
 
+/*
+test encodage "exactement k".
+ */
 int main(void) {
     CNFformule f;
     int vars[4] = {1, 2, 3, 4};

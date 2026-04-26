@@ -3,6 +3,7 @@
 #include "3sat.h"
 #include "cnf.h"
 
+//test lecture d'un fichier DIMACS CNF.
 int main(int argc, char *argv[]) {
     CNFformule f;
     int nb_vars;

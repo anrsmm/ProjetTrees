@@ -8,6 +8,7 @@
 #include "contraintesCard.h"
 #include "dimacs.h"
 
+//test affichage grille + solution SAT.
 int main(int argc, char *argv[]) {
     Grille *g;
     SATmap *m;

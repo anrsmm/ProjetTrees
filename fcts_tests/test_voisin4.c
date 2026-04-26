@@ -3,6 +3,7 @@
 #include "grille.h"
 #include "voisinage.h"
 
+//test voisinage n4 + helpers d'adjacence.
 int main(int argc, char *argv[]) {
     Grille *g;
     Position p;
@@ -27,9 +28,9 @@ int main(int argc, char *argv[]) {
 
     afficher_grille(g);
 
-    // =========================
+
     // test N4
-    // =========================
+
     printf("\nTest N4 voisins de (%d,%d)\n", p.ligne, p.colonne);
 
     nb = n4_voisins(g, p, voisins);
@@ -39,9 +40,7 @@ int main(int argc, char *argv[]) {
         printf("voisin %d : (%d,%d)\n", i, voisins[i].ligne, voisins[i].colonne);
     }
 
-//     =========================
     //   test cases vides adj à un arbre
-    // =========================
     if (case_est_tree(g, p)) {
         printf("\nTest cases vides voisines de larbre (%d,%d)\n", p.ligne, p.colonne);
 
@@ -55,9 +54,8 @@ int main(int argc, char *argv[]) {
         printf("\n(%d,%d) n'est pas un arbre -> pas test cases_vides_adj \n", p.ligne, p.colonne);
     }
 
-    // =========================
+
     // test arbres voisins
-    // =========================
     printf("\nTest arbres voisins de (%d,%d)\n", p.ligne, p.colonne);
 
     nb = adj_trees(g, p, voisins);

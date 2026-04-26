@@ -6,6 +6,9 @@
 #include "sat.h"
 #include "contraintesCard.h"
 
+/*
+test contraintes sur les colonnes.
+ */
 int main(int argc, char *argv[]) {
     Grille *g;
     CNFformule f;

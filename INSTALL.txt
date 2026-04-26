@@ -1,187 +1,113 @@
-INSTALL - Installation et execution depuis les sources
-======================================================
+INSTALL - Projet Tents
+=============================================
+------------------------------------------------------------------
+1) Prérequis
+---------------------------------------------------------------
 
-Ce fichier couvre uniquement :
-- les pre-requis,
-- les ressources externes (URL),
-- la procedure de compilation/execution depuis le code source.
+Systeme : linux 
 
-Le mode d'emploi illustre (scenarios/exemples) est dans LISEZMOI.txt.
+Outils nécessaires :
+- (gcc et make) ainsi que minisat (solveur SAT externe).
+
+Outils optionnels (affichage graphique uniquement) :
+- python3
+- python3-tk (tkinter pour Python pour lancer l'interface graphique (affichage_grilles_tk.py))
 
 ------------------------------------------------------------------
-1) Pre-requis
+2) Ressources externes utilisées (Liens)
 ------------------------------------------------------------------
 
-- Systeme Linux recommande
-- gcc
-- make
-- SAT-solveur externe compatible DIMACS (minisat utilise)
-- python3 (si utilisation de l'affichage tkinter)
-- tkinter pour python3
-
-------------------------------------------------------------------
-2) Ressources externes (URL)
-------------------------------------------------------------------
-
-- MiniSat (utilise dans ce projet):
+- MiniSat (solveur SAT utilise) :
   https://github.com/niklasso/minisat
 
-- SAT Competition (autres solveurs SAT):
-  https://www.satcompetition.org/
-
-- Reference format DIMACS CNF:
+- Format DIMACS CNF (reference) :
   https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html
 
-------------------------------------------------------------------
-3) Recuperation / positionnement
-------------------------------------------------------------------
-
-Se placer a la racine du projet, puis compiler.
-
-------------------------------------------------------------------
-4) Compilation depuis le code source
-------------------------------------------------------------------
-
-Compilation complete :
-
-    make
-
-Nettoyage :
-
-    make clean
-
-------------------------------------------------------------------
-5) Execution depuis les sources
-------------------------------------------------------------------
-
-Execution principale (pipeline complet) :
-
-    ./resolutionTents Tests/Grille1_66.txt
-
-Execution manuelle en etapes :
-
-    ./grille-cnf Tests/Grille1_66.txt temp.cnf
-    minisat temp.cnf temp.out
-    ./minisat-grille Tests/Grille1_66.txt temp.out
-
-Option 3-SAT :
-
-    ./cnf-3sat temp.cnf temp_3sat.cnf
-
-Affichage Python (optionnel) :
-
-    python3 affichage_grilles_tk.py
-
-------------------------------------------------------------------
-6) Execution avec Docker (optionnel)
-------------------------------------------------------------------
-
-Cette version du depot ne contient pas de configuration Docker
-(`Dockerfile` / `docker-compose.yml` absents).
-
-Conclusion :
-- l'execution Docker n'est pas disponible dans cette version ;
-- utiliser la compilation et l'execution locales (sections 4 et 5).
-INSTALL - Projet INF402 (Tents and Trees SAT)
-==============================================
-
-Ce fichier explique :
-1) les pre-requis
-2) les ressources externes (avec URL)
-3) comment compiler et executer le projet depuis le code source
-
-------------------------------------------------------------------
-1) Pre-requis
-------------------------------------------------------------------
-
-- Systeme Linux recommande
-- gcc (compilateur C)
-- make
-- python3 (pour l'affichage tkinter)
-- tkinter pour python3 (souvent deja inclus selon distribution)
-- SAT-solveur externe compatible DIMACS (minisat utilise dans ce projet)
-
-------------------------------------------------------------------
-2) Ressources externes (avec URL)
-------------------------------------------------------------------
-
-- MiniSat (solveur SAT utilise):
-  https://github.com/niklasso/minisat
-
-- SAT Competition (liste de solveurs SAT):
+- SAT Competition (contexte solveurs SAT donne sur le moodle INF402) :
   https://www.satcompetition.org/
-
-- Format DIMACS CNF (reference generale):
-  https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html
 
 ------------------------------------------------------------------
 3) Compilation depuis le code source
 ------------------------------------------------------------------
 
-Depuis la racine du projet:
+Depuis la racine du projet :  make
 
-    make
-
-Cette commande compile les executables du projet (tests + programmes principaux).
-
-Nettoyage:
-
-    make clean
+Nettoyage :   make clean
 
 ------------------------------------------------------------------
-4) Execution - programme principal recommande
+4) Execution du programme principal
 ------------------------------------------------------------------
+Commande recommandée (execution complete) :
 
-Lancer la resolution complete (grille -> CNF -> minisat -> solution):
+  ./resolutionTents <Grille>
 
-    ./resolutionTents Tests/Grille1_66.txt
-
-Ce programme produit aussi:
-- temp.cnf
-- temp.out
-- donnees_grilles.json
-
-------------------------------------------------------------------
-5) Execution en etapes (alternative)
-------------------------------------------------------------------
-
-A) Generer le CNF DIMACS:
-
-    ./grille-cnf Tests/Grille1_66.txt temp.cnf
-
-B) Lancer minisat:
-
-    minisat temp.cnf temp.out
-
-C) Afficher la solution:
-
-    ./minisat-grille Tests/Grille1_66.txt temp.out
-
-D) Transformer CNF -> 3-SAT (optionnel):
-
-    ./cnf-3sat temp.cnf temp_3sat.cnf
+Sorties attendues :
+- affichage de la solution dans le terminal ;
+- création de temp.cnf
+- création de temp.out ;
+- création de donnees_grilles.json.
 
 ------------------------------------------------------------------
-6) Affichage graphique (Python)
+5) Execution manuelle etape par etape 
+------------------------------------------------------------------
+Avec le fichier Grille1_66 : 
+
+A) Générer le CNF DIMACS :
+        ./grille-cnf Tests/Grille1_66.txt temp.cnf
+
+B) Lancer MiniSat :
+        minisat temp.cnf temp.out
+
+C) Afficher la solution :
+        ./minisat-grille Tests/Grille1_66.txt temp.out
+
+D) Conversion de CNF en 3-SAT :
+        ./cnf-3sat temp.cnf temp_3sat.cnf
+
+------------------------------------------------------------------
+6) Affichage graphique (optionnel)
 ------------------------------------------------------------------
 
-Pre-requis supplementaires:
-- fichier donnees_grilles.json (genere par resolutionTents)
-- images Images/arbre.png et Images/tente.png
+Commande : python3 affichage_grilles_tk.py
 
-Lancer l'interface:
-
-    python3 affichage_grilles_tk.py
+Prerequis :
+- donnees_grilles.json (généré avec resolutionTents) ;
+- Images/arbre.png et Images/tente.png (symboles arbre/tente);
+- python3 et python3-tk.
 
 ------------------------------------------------------------------
-7) Exemples d'instances fournies
+7) Mode d'emploi des tests (dans le dossier fcts_tests)
 ------------------------------------------------------------------
 
-Les exemples sont dans le dossier Tests/, notamment:
-- Tests/Grille1_66.txt
-- Tests/Grille6_88.txt
-- Tests/Grille11_1010.txt
-- Tests/Grille18_1515.txt
-- Tests/Grille23_2020.txt
-- Tests/Grille25_3030.txt
+Tests principaux (fcts_tests) :
 
+    ./fcts_tests/test_grille1
+    ./fcts_tests/test_grille2 <fichierGrille.txt>
+    ./fcts_tests/test_voisin4 <fichierGrille.txt> 0 1
+    ./fcts_tests/test_voisin8 <fichierGrille.txt> 0 1
+    ./fcts_tests/test_sat <fichierGrille.txt> 0 1
+    ./fcts_tests/test_cnf
+    
+    ./fcts_tests/test_contrainte1 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte2 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte3 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte4 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte5 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte6 <fichierGrille.txt>
+    ./fcts_tests/test_contrainte7 <fichierGrille.txt>
+    
+    ./fcts_tests/test_card1
+    ./fcts_tests/test_card2
+    ./fcts_tests/test_card3
+
+    ./fcts_tests/test_ligne1 <fichierGrille.txt> 0
+    ./fcts_tests/test_lignes <fichierGrille.txt>
+    ./fcts_tests/test_colonnes <fichierGrille.txt>
+    
+    ./fcts_tests/test_contraintesCOMPLET <fichierGrille.txt>
+    
+    ./fcts_tests/test_dimacs <fichierGrille.txt> <resultat_test_dimacs.cnf>
+    ./fcts_tests/test_solution <fichierGrille.txt> <resultat.out>
+    ./fcts_tests/test_lireDimacs <resultat.cnf>
+    
+    ./fcts_tests/test_3sat <resultat.cnf> <result_3sat.cnf>

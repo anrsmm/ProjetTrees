@@ -3,6 +3,7 @@
 #include "grille.h"
 #include "voisinage.h"
 
+//test voisinage n8.
 int main(int argc, char *argv[]) {
     Grille *g;
     Position p;

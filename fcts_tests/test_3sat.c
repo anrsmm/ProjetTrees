@@ -3,6 +3,9 @@
 #include "cnf.h"
 #include "3sat.h"
 
+/*
+test de lecture CNF + conversion 3-SAT.
+ */
 int main(int argc, char *argv[]) {
     CNFformule f;
     CNFformule f3;

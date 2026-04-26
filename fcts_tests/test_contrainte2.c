@@ -6,6 +6,9 @@
 #include "sat.h"
 #include "contraintes.h"
 
+
+//test contrainte2 (assoc => tente).
+
 int main(int argc, char *argv[]) {
     Grille *g;
     SATmap *m;

@@ -2,9 +2,12 @@
 
 #include "cnf.h"
 
-// Crée une clause vide avec une capacité initiale.
-// La capacité grandira dynamiquement si besoin.
+/*
+ * creer_clause:
+ * cree une clause vide (tab dynamique).
+ */
 Clause creer_clause(){
+	// Etape principale de la fonction.
 	Clause c;
 
 	c.taille=0;
@@ -19,19 +22,25 @@ Clause creer_clause(){
 	return c;
 }
 
+/*
+ * free_clause:
+ * libere le tableau de litteraux d'une clause.
+ */
 void free_clause(Clause *clause) {
     if (clause == NULL) {
         return;
     }
 
     free(clause->litt);
-	// Bonne pratique : remettre les champs à zéro après free
-	// pour éviter les doubles usages accidentels.
+	// reset champs apres free
     clause->litt = NULL;
     clause->taille = 0;
     clause->max = 0;
 }
-// Ajoute un littéral en fin de clause (tableau dynamique).
+/*
+ * ajout_LittClause:
+ * ajoute 1 litt en fin de clause.
+ */
 void ajout_LittClause(Clause *clause, int litt){
 	if (clause ==NULL){
 		return;
@@ -41,7 +50,7 @@ void ajout_LittClause(Clause *clause, int litt){
 	}
 	int *temp;
 	if (clause->taille >= clause->max) {
-		// Stratégie classique : doubler la capacité pour amortir le coût.
+		// double la capacite si plein
 		temp =realloc(clause->litt, 2 * clause->max * sizeof(int));
 		if (temp ==NULL) {
 			return;
@@ -54,8 +63,12 @@ void ajout_LittClause(Clause *clause, int litt){
 }
 
 
-// Crée une formule CNF vide (liste dynamique de clauses).
+/*
+ * creer_cnfFormule:
+ * cree une formule CNF vide.
+ */
 CNFformule creer_cnfFormule() {
+    // Etape principale de la fonction.
     CNFformule f;
 
     f.num = 0;
@@ -69,9 +82,10 @@ CNFformule creer_cnfFormule() {
 
     return f;
 }
-
-
-
+/*
+ * ajout_clauseFormule:
+ * ajoute 1 clause a la formule.
+ */
 void ajout_clauseFormule(CNFformule *formule, Clause clause){
     if (formule == NULL) {
         return;
@@ -84,7 +98,7 @@ void ajout_clauseFormule(CNFformule *formule, Clause clause){
 
     Clause *temp;
     if (formule->num >= formule->max) {
-        // Même stratégie d'agrandissement que pour les littéraux.
+        // meme logique d'agrandissement
         temp = realloc(formule->clauses, 2 * formule->max * sizeof(Clause));
         if (temp == NULL) {
             return;
@@ -98,13 +112,17 @@ void ajout_clauseFormule(CNFformule *formule, Clause clause){
     formule->num++;
 }
 
+/*
+ * free_cnfFormule:
+ * libere toutes les clauses puis la formule.
+ */
 void free_cnfFormule(CNFformule *formule) {
     if (formule == NULL) {
         return;
     }
 
     if (formule->clauses != NULL) {
-        // Libération profonde : chaque clause puis le tableau de clauses.
+        // liberation profonde clause par clause
         for (int i = 0; i < formule->num; i++) {
             free_clause(&formule->clauses[i]);
         }

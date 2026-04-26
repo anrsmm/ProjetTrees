@@ -6,6 +6,7 @@
 #include "sat.h"
 #include "contraintes.h"
 
+//test contrainte7 (pas de tentes voisines n8).
 int main(int argc, char *argv[]) {
     Grille *g;
     CNFformule f;

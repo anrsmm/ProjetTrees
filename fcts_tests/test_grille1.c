@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "grille.h"
 
+//test basique des primitives de grille.
 int main(void) {
     Grille *g;
     Position p1, p2, p3;
@@ -14,7 +15,7 @@ int main(void) {
 
     printf("Grille creee : %d x %d\n", g->Hauteur, g->Largeur);
 
-    // On place quelques arbres "a la main"
+    // abres choisis 
     g->est_tree[0][1] = 1;
     g->est_tree[1][3] = 1;
     g->est_tree[2][0] = 1;
@@ -25,7 +26,7 @@ int main(void) {
 
     p2.ligne = 0;
     p2.colonne = 0;   // vide
-//
+    // Cas hors grille pour tester les gardes.
     p3.ligne = 10;
     p3.colonne = 10;  // hors grille
 

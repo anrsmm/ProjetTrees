@@ -7,6 +7,8 @@
 #include "contraintes.h"
 #include "contraintesCard.h"
 
+//test construction CNF complete.
+
 int main(int argc, char *argv[]) {
     Grille *g;
     SATmap *m;

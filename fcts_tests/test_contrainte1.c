@@ -7,6 +7,9 @@
 #include "contraintes.h"
 #include "voisinage.h"
 
+/*
+test contrainte1 (arbre => non tente).
+ */
 int main(int argc, char *argv[]) {
     Grille *g;
     CNFformule f;

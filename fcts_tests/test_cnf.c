@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include "cnf.h"
 
+/*
+ test unitaire des primitives CNF.
+ */
 int main(void) {
     Clause c;
     CNFformule f;
     int i, j;
 
-    // =========================
     // TEST creer_cnfFormule
-    // =========================
     f = creer_cnfFormule();
 
     if (f.clauses == NULL) {
@@ -17,13 +18,12 @@ int main(void) {
         return 1;
     }
 
+    //pour affichage visuelisation facile 
     printf("=== Test creer_cnfFormule ===\n");
     printf("num = %d\n", f.num);
     printf("max = %d\n", f.max);
 
-    // =========================
     // TEST ajout_litt_clause
-    // =========================
     c = creer_clause();
 
     if (c.litt == NULL) {
@@ -47,9 +47,7 @@ int main(void) {
         printf("litt[%d] = %d\n", i, c.litt[i]);
     }
 
-    // =========================
     // TEST ajout_clause_formule
-    // =========================
     ajout_clauseFormule(&f, c);
 
     printf("\n=== Test ajout_clause_formule ===\n");
@@ -64,9 +62,7 @@ int main(void) {
         printf("\n");
     }
 
-    // =========================
     // TEST free_cnfFormule
-    // =========================
     free_cnfFormule(&f);
 
     printf("\n=== Test free_cnfFormule ===\n");

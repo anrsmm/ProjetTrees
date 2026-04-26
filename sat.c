@@ -5,9 +5,10 @@
 #include "sat.h"
 #include "voisinage.h"
 
-// Variable tente prp :
-// on considere que identifiants 1à(H*L) pour les variables T_(i,j)
-// Map choix que: id = i*Largeur + j + 1 (DIMACS commence à 1)
+/*
+ * tente_var:
+ * mappe une case (i,j) vers son id DIMACS tente.
+ */
 int tente_var(Grille *g, Position p){
 	if (g == NULL) {
 	//	printf("Erreur : grille NULL\n");
@@ -23,9 +24,12 @@ int tente_var(Grille *g, Position p){
 	return idT;
 }
 
-// Compte combien de variables d'association A_{arbre,case} vont etre necessaire
-// Chaque association correspond à un couple arbre/case_vide_voisine_4
+/*
+ * compter_varsAssoc:
+ * compte les vars d'assoc arbre<->case vide.
+ */
 int compter_varsAssoc(Grille *g){
+    // Etape principale de la fonction.
     if (g == NULL) {
         return 0;
     }
@@ -40,8 +44,10 @@ int compter_varsAssoc(Grille *g){
 
     return total;
 } 
-
-
+/*
+ * creer_mapSAT:
+ * construit le mapping complet des vars SAT.
+ */
 SATmap *creer_mapSAT(Grille *g){
 	if (g==NULL){
 		return NULL;
@@ -57,7 +63,7 @@ SATmap *creer_mapSAT(Grille *g){
 
 	m->assoc_var_num = compter_varsAssoc(g);
 	m->total_var_num = g->Hauteur * g->Largeur + m->assoc_var_num;
-	// total_var_num = variables tente + variables association.
+	// total = vars tente + vars assoc
 
 
 	m->assoc_vars = malloc( m->assoc_var_num * sizeof(AssociationVar));
@@ -67,7 +73,7 @@ SATmap *creer_mapSAT(Grille *g){
 
 	}
 	id_courant = g->Hauteur * g->Largeur +1;
-	// Les identifs d'association (A) commencent juste après les idfs des tentes (T)!!
+	// ids assoc apres les ids tentes
 
 	int nb_voisinsVides;
 	int index = 0;
@@ -93,15 +99,22 @@ SATmap *creer_mapSAT(Grille *g){
 	return m;
 }
 
-// libeation tout SATmap.
+/*
+fonction free_mapSAT:
+libère tout SATmap.
+ */
 void free_mapSAT(SATmap *m){
 	if (m==NULL){
 		return;
 	}
-	free(m->assoc_vars);
-	free(m);
+	free(m->assoc_vars); //libere les associations arbre->case vide
+	free(m); //libere la structure SATmap
 }
 
+/*
+assoc_var:
+renvoie l'id DIMACS d'une assoc precise.
+ */
 int assoc_var(SATmap *m, Position tree, Position case_vide){
 	if (m==NULL){
 		return 0;
@@ -109,11 +122,9 @@ int assoc_var(SATmap *m, Position tree, Position case_vide){
 
 	for (int i=0;i < m->assoc_var_num; i++) {
 		// Recherche linea
-		if (m->assoc_vars[i].tree.ligne == tree.ligne && 
-			m->assoc_vars[i].tree.colonne == tree.colonne && 
-			m->assoc_vars[i].case_vide.ligne == case_vide.ligne &&
-			m->assoc_vars[i].case_vide.colonne == case_vide.colonne) {
-			return m->assoc_vars[i].dimacs_id;
+		if (m->assoc_vars[i].tree.ligne == tree.ligne && m->assoc_vars[i].tree.colonne == tree.colonne && m->assoc_vars[i].case_vide.ligne == case_vide.ligne && m->assoc_vars[i].case_vide.colonne == case_vide.colonne) {
+			
+				return m->assoc_vars[i].dimacs_id; //retourne l'id DIMACS de l'association
 		}
 	}
 	return 0;
