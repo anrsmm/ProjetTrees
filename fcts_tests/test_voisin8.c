@@ -10,13 +10,13 @@ int main(int argc, char *argv[]) {
     int nb, i;
 
     if (argc < 4) {
-        printf("Usage: %s <fichier> <ligne> <colonne>\n", argv[0]);
+        printf("Usage: %s <fichier> <ligne> <col>\n", argv[0]);
         return 1;
     }
 
     g = lire_grille_fichier(argv[1]);
     if (g == NULL) {
-        printf("Erreur lecture fichier\n");
+        printf("erreur lecture fichier\n");
         return 1;
     }
 
@@ -25,14 +25,16 @@ int main(int argc, char *argv[]) {
 
     afficher_grille(g);
 
-    printf("\nTest voisins N8 de (%d,%d)\n", p.ligne, p.colonne);
+    printf("\nTest voisins n8 de (%d,%d)\n", p.ligne, p.colonne);
+
 
     nb = n8_voisins(g, p, voisins);
-
     printf("Nombre de voisins : %d\n", nb);
     for (i = 0; i < nb; i++) {
-        printf("voisin %d : (%d,%d)\n", i, voisins[i].ligne, voisins[i].colonne);
+        printf("voisin %d   : (%d,%d)\n", i, voisins[i].ligne, voisins[i].colonne);
     }
+
+
 
     free_grille(g);
     return 0;

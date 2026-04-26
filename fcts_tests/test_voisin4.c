@@ -20,13 +20,15 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+
+
     p.ligne = atoi(argv[2]);
     p.colonne = atoi(argv[3]);
 
     afficher_grille(g);
 
     // =========================
-    // 🔹 TEST 1 : N4
+    // test N4
     // =========================
     printf("\nTest N4 voisins de (%d,%d)\n", p.ligne, p.colonne);
 
@@ -37,24 +39,24 @@ int main(int argc, char *argv[]) {
         printf("voisin %d : (%d,%d)\n", i, voisins[i].ligne, voisins[i].colonne);
     }
 
-    // =========================
-    // 🔹 TEST 2 : cases vides adj à un arbre
+//     =========================
+    //   test cases vides adj à un arbre
     // =========================
     if (case_est_tree(g, p)) {
-        printf("\nTest cases vides voisines de l'arbre (%d,%d)\n", p.ligne, p.colonne);
+        printf("\nTest cases vides voisines de larbre (%d,%d)\n", p.ligne, p.colonne);
 
         nb = est_caseVide_Adj(g, p, voisins);
 
-        printf("Nombre de cases vides voisines : %d\n", nb);
+        printf("Nombre cases vides voisines : %d\n", nb);
         for (i = 0; i < nb; i++) {
             printf("case vide %d : (%d,%d)\n", i, voisins[i].ligne, voisins[i].colonne);
         }
     } else {
-        printf("\n(%d,%d) n'est pas un arbre → test cases_vides_adj ignoré\n", p.ligne, p.colonne);
+        printf("\n(%d,%d) n'est pas un arbre -> pas test cases_vides_adj \n", p.ligne, p.colonne);
     }
 
     // =========================
-    // 🔹 TEST 3 : arbres voisins
+    // test arbres voisins
     // =========================
     printf("\nTest arbres voisins de (%d,%d)\n", p.ligne, p.colonne);
 

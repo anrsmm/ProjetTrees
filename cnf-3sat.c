@@ -4,14 +4,14 @@
 #include "3sat.h"
 
 int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        printf("Usage: %s <fichier_entree.cnf> <fichier_sortie.cnf>\n", argv[0]);
+        return 1;
+    }
+
     CNFformule f;
     CNFformule f3;
     int nb_vars;
-
-    if (argc < 3) {
-        printf("Usage: %s <input.cnf> <output.cnf>\n", argv[0]);
-        return 1;
-    }
 
     f = lire_dimacs(argv[1], &nb_vars);
 

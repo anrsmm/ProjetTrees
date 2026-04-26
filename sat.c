@@ -5,9 +5,9 @@
 #include "sat.h"
 #include "voisinage.h"
 
-// Variable "tente" principale :
-// on réserve les ids 1..(H*L) pour les variables T_(i,j).
-// Mapping choisi : id = i*Largeur + j + 1 (DIMACS commence à 1).
+// Variable tente prp :
+// on considere que identifiants 1à(H*L) pour les variables T_(i,j)
+// Map choix que: id = i*Largeur + j + 1 (DIMACS commence à 1)
 int tente_var(Grille *g, Position p){
 	if (g == NULL) {
 	//	printf("Erreur : grille NULL\n");
@@ -23,8 +23,8 @@ int tente_var(Grille *g, Position p){
 	return idT;
 }
 
-// Compte combien de variables d'association A_(arbre,case) seront nécessaires.
-// Chaque association correspond à un couple (arbre, case_vide_voisine_4).
+// Compte combien de variables d'association A_{arbre,case} vont etre necessaire
+// Chaque association correspond à un couple arbre/case_vide_voisine_4
 int compter_varsAssoc(Grille *g){
     if (g == NULL) {
         return 0;
@@ -67,10 +67,7 @@ SATmap *creer_mapSAT(Grille *g){
 
 	}
 	id_courant = g->Hauteur * g->Largeur +1;
-	// Les ids d'association commencent juste après les ids des tentes.
-
-	// Remplissage séquentiel de la table d'association :
-	// assoc_vars[index] = (arbre, case, id_dimacs)
+	// Les identifs d'association (A) commencent juste après les idfs des tentes (T)!!
 
 	int nb_voisinsVides;
 	int index = 0;
@@ -84,15 +81,19 @@ SATmap *creer_mapSAT(Grille *g){
             		m->assoc_vars[index].case_vide = voisins[j];
             		m->assoc_vars[index].dimacs_id = id_courant;
 
+
             		index++;
             		id_courant++;
         	}
+
+
+
     	}
 
 	return m;
 }
 
-// Libération complète de la structure SATmap.
+// libeation tout SATmap.
 void free_mapSAT(SATmap *m){
 	if (m==NULL){
 		return;
@@ -107,8 +108,7 @@ int assoc_var(SATmap *m, Position tree, Position case_vide){
 	}
 
 	for (int i=0;i < m->assoc_var_num; i++) {
-		// Recherche linéaire : suffisante ici car on reste sur des tailles de grille
-		// raisonnables pour un projet pédagogique.
+		// Recherche linea
 		if (m->assoc_vars[i].tree.ligne == tree.ligne && 
 			m->assoc_vars[i].tree.colonne == tree.colonne && 
 			m->assoc_vars[i].case_vide.ligne == case_vide.ligne &&

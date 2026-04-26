@@ -73,8 +73,6 @@ CNFformule creer_cnfFormule() {
 
 
 void ajout_clauseFormule(CNFformule *formule, Clause clause){
-    Clause *temp;
-
     if (formule == NULL) {
         return;
     }
@@ -83,6 +81,8 @@ void ajout_clauseFormule(CNFformule *formule, Clause clause){
         return;
     }
 
+
+    Clause *temp;
     if (formule->num >= formule->max) {
         // Même stratégie d'agrandissement que pour les littéraux.
         temp = realloc(formule->clauses, 2 * formule->max * sizeof(Clause));
@@ -99,15 +99,13 @@ void ajout_clauseFormule(CNFformule *formule, Clause clause){
 }
 
 void free_cnfFormule(CNFformule *formule) {
-    int i;
-
     if (formule == NULL) {
         return;
     }
 
     if (formule->clauses != NULL) {
         // Libération profonde : chaque clause puis le tableau de clauses.
-        for (i = 0; i < formule->num; i++) {
+        for (int i = 0; i < formule->num; i++) {
             free_clause(&formule->clauses[i]);
         }
 

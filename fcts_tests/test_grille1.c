@@ -7,8 +7,9 @@ int main(void) {
 
     g = creer_grille(4, 5);
     if (g == NULL) {
-        printf("Erreur : creation de la grille impossible.\n");
+        printf("erreur : creation de la grille impossible.\n");
         return 1;
+
     }
 
     printf("Grille creee : %d x %d\n", g->Hauteur, g->Largeur);

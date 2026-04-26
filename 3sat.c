@@ -10,13 +10,8 @@
 // Hypothèse utilisée ici : l'en-tête "p cnf ..." est lue directement.
 CNFformule lire_dimacs(const char *nmfichier, int *nb_var) {
     FILE *fichier;
-    CNFformule formule;
-    Clause clause;
-    char p[16];
-    char cnf[16];
-    int nb_cl;
-    int x;
 
+    CNFformule formule;
     formule = creer_cnfFormule();
 
     if (nb_var != NULL) {
@@ -32,6 +27,9 @@ CNFformule lire_dimacs(const char *nmfichier, int *nb_var) {
         return formule;
     }
 
+    char p[16];
+    char cnf[16];
+    int nb_cl;
     if (fscanf(fichier, "%15s %15s %d %d", p, cnf, nb_var, &nb_cl) != 4) {
         fclose(fichier);
         return formule;
@@ -42,12 +40,14 @@ CNFformule lire_dimacs(const char *nmfichier, int *nb_var) {
         return formule;
     }
 
+    Clause clause;
     clause = creer_clause();
     if (clause.litt == NULL) {
         fclose(fichier);
         return formule;
     }
 
+    int x;
     while (fscanf(fichier, "%d", &x) == 1) {
         if (x == 0) {
             // 0 = fin de clause en DIMACS.
@@ -71,8 +71,6 @@ CNFformule lire_dimacs(const char *nmfichier, int *nb_var) {
 // Ecrit une formule (souvent transformée en 3-SAT) au format DIMACS.
 int ecrire_dimacs3sat(const char *nom_fichier, CNFformule *f, int nb_vars) {
     FILE *out;
-    int i, j;
-
     if (nom_fichier == NULL || f == NULL) {
         return 0;
     }
@@ -84,8 +82,8 @@ int ecrire_dimacs3sat(const char *nom_fichier, CNFformule *f, int nb_vars) {
 
     fprintf(out, "p cnf %d %d\n", nb_vars, f->num);
 
-    for (i = 0; i < f->num; i++) {
-        for (j = 0; j < f->clauses[i].taille; j++) {
+    for (int i = 0; i < f->num; i++) {
+        for (int j = 0; j < f->clauses[i].taille; j++) {
             fprintf(out, "%d ", f->clauses[i].litt[j]);
         }
         fprintf(out, "0\n");
@@ -97,18 +95,13 @@ int ecrire_dimacs3sat(const char *nom_fichier, CNFformule *f, int nb_vars) {
 
 
 void transform_Clause3sat(Clause *cl, CNFformule *f3, int *next_var) {
-    int n;
-    int i;
-    int prev;
-    int next;
-    Clause c;
-
     if (cl == NULL || f3 == NULL || next_var == NULL) {
         return;
     }
 
+    int n;
     n = cl->taille;
-
+    Clause c;
     if (n <= 3) {
         // Déjà 3-SAT (ou moins) : on recopie telle quelle.
         c = creer_clause();
@@ -116,7 +109,7 @@ void transform_Clause3sat(Clause *cl, CNFformule *f3, int *next_var) {
             return;
         }
 
-        for (i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             ajout_LittClause(&c, cl->litt[i]);
         }
 
@@ -126,6 +119,8 @@ void transform_Clause3sat(Clause *cl, CNFformule *f3, int *next_var) {
 
     // Cas n > 3 : transformation de Tseitin en chaîne.
     // On introduit des variables auxiliaires "next_var".
+    int prev;
+    int next;
     prev = *next_var;
     (*next_var)++;
 
@@ -140,7 +135,7 @@ void transform_Clause3sat(Clause *cl, CNFformule *f3, int *next_var) {
     ajout_clauseFormule(f3, c);
     // Première clause : (l1 v l2 v y1)
 
-    for (i = 2; i < n - 2; i++) {
+    for (int i = 2; i < n - 2; i++) {
         next = *next_var;
         (*next_var)++;
 
@@ -174,18 +169,16 @@ void transform_Clause3sat(Clause *cl, CNFformule *f3, int *next_var) {
 // total_vars est mis à jour avec les variables auxiliaires créées.
 CNFformule transform_Formule3sat(CNFformule *f, int *total_vars) {
     CNFformule f3;
-    int i;
-    int next_var;
-
     f3 = creer_cnfFormule();
 
     if (f == NULL || total_vars == NULL || f3.clauses == NULL) {
         return f3;
     }
 
+    int next_var;
     next_var = *total_vars + 1;
 
-    for (i = 0; i < f->num; i++) {
+    for (int i = 0; i < f->num; i++) {
         transform_Clause3sat(&f->clauses[i], &f3, &next_var);
     }
 
